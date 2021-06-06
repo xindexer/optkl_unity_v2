@@ -4,22 +4,22 @@ using UnityEngine;
 public class DataParameters : ScriptableObject
 {
     [SerializeField]
-    private int trackCircumference;
-    public int TrackCircumference
+    private string tradeDate;
+    public string TradeDate
     {
         get
         {
-            return trackCircumference;
+            return tradeDate;
         }
         set
         {
-            trackCircumference = value;
+            tradeDate = value;
         }
     }
 
     [SerializeField]
     [Range(0, 250)]
-    private int trackSpacer;
+    private int trackSpacer = 100;
     public int TrackSpacer
     {
         get
@@ -63,32 +63,62 @@ public class DataParameters : ScriptableObject
     }
 
     [SerializeField]
-    [Range(0f, 10f)]
-    private int pieSpacer;
-    public int PieSpacer
+    [Range(0, 500)]
+    private int tickHeight = 30;
+    public int TickHeight
     {
         get
         {
-            return pieSpacer;
+            return tickHeight;
         }
         set
         {
-            pieSpacer = value;
+            tickHeight = value;
         }
     }
 
     [SerializeField]
-    [Range(0f, 20f)]
-    private int powerWedge;
-    public int PowerWedge
+    [Range(0, 10)]
+    private int tickWidth = 1;
+    public int TickWidth
     {
         get
         {
-            return powerWedge;
+            return tickWidth;
         }
         set
         {
-            powerWedge = value;
+            tickWidth = value;
+        }
+    }
+
+    [SerializeField]
+    [Range(6000, 14000)]
+    private int tickRadius = 10000;
+    public int TickRadius
+    {
+        get
+        {
+            return tickRadius;
+        }
+        set
+        {
+            tickRadius = value;
+        }
+    }
+
+    [SerializeField]
+    [Range(10000, 16000)]
+    private int labelRadius = 11000;
+    public int LabelRadius
+    {
+        get
+        {
+            return labelRadius;
+        }
+        set
+        {
+            labelRadius = value;
         }
     }
 
@@ -106,4 +136,35 @@ public class DataParameters : ScriptableObject
             scatterRadius = value;
         }
     }
+
+    [SerializeField]
+    [Range(0f, 10f)]
+    private float pieSpacer = 3f;
+    public float PieSpacer
+    {
+        get
+        {
+            return pieSpacer;
+        }
+        set
+        {
+            pieSpacer = value;
+        }
+    }
+
+    [SerializeField]
+    [Range(0f, 20f)]
+    private float powerWedge = 10f;
+    public float PowerWedge
+    {
+        get
+        {
+            return powerWedge;
+        }
+        set
+        {
+            powerWedge = value;
+        }
+    }
+
 }

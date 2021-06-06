@@ -300,13 +300,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dataStrike: {fileID: 11400000, guid: 6f932e2709cca4c1cba0a0c61741cc7b, type: 2}
   dataStorage: {fileID: 11400000, guid: e45dfd15bbc86471c9893546648c6eb2, type: 2}
+  trackStorage: {fileID: 11400000, guid: 328b37359d1de4521b7df3e7fb640122, type: 2}
+  trackLabels: {fileID: 11400000, guid: 3dd997e72087947279a404940daa36b9, type: 2}
   dataParameters: {fileID: 11400000, guid: b9fe65cab2c88479d97a7e68a33f0b90, type: 2}
-  dataLabels: {fileID: 11400000, guid: f460d18ce31c643b5be2b0f577c58dd7, type: 2}
   dataMax: {fileID: 11400000, guid: 96a6f16cee658437f8dcc9fee6cd80cf, type: 2}
+  settings: {fileID: 11400000, guid: 1a06fcb855f7b4943a74ffb302926261, type: 2}
   logger: {fileID: 11400000, guid: 0900e17bc51b247979f980849aa1f278, type: 2}
   openingCanvas: {fileID: 926104099}
   loadingCanvas: {fileID: 1153855920}
   runningCanvas: {fileID: 1180786435}
+  threeDTextPrefab: {fileID: 8266459756306327391, guid: 7d87d43f2558f46408f949d396ed2120, type: 3}
 --- !u!1 &349452653
 GameObject:
   m_ObjectHideFlags: 0

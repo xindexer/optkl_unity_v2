@@ -1,6 +1,7 @@
 using System;
-using UnityEngine;
+using System.Collections.Generic;
 using Optkl.Data;
+using UnityEngine;
 
 namespace Optkl.Utilities
 {
@@ -8,39 +9,38 @@ namespace Optkl.Utilities
     {
 
         public void BuildLabels(
-            object[][] optionData,
+            float[][] optionData,
             DataParameters dataParameters,
-            DataLabels dataLabels,
             DataStrike dataStrike,
-            DataMax dataMax)
+            DataMax dataMax,
+            Settings settings)
         {
             DateTime pvDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc); 
-            string prevDateTime = pvDateTime.AddMilliseconds(Convert.ToUInt64(optionData[0][3])).ToString("yyyyMMMdd");
-            DateTime trDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
-            string tradeDate = trDateTime.AddMilliseconds(Convert.ToUInt64(optionData[0][37])).ToString("yyyyMMMdd");
+            string prevDateTime = pvDateTime.AddMilliseconds(Convert.ToUInt64(optionData[0][1] * 1000 + 4.32e+7)).ToString("yyyyMMMdd");
             Boolean isLast = false;
             Boolean isFirst = true;
             float minStrike = 100000000f;
             float maxStrike = 0f;
-            float trackLength = 0f;
+            float trackCircumference = 0f;
+            int numberPies = 0;
             InitialParameters initialParameters = new InitialParameters();
             MaxData customMax = new MaxData();
-            initializeDataMax(initialParameters, tradeDate, dataMax, customMax);
+            initializeDataMax(initialParameters, dataMax, customMax, dataParameters.TradeDate);
             for (int i = 0; i < optionData.Length; i++) 
             {
                 if (i == optionData.Length - 1)
                     isLast = true;
                 DateTime crDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
-                string currDateTime = crDateTime.AddMilliseconds(Convert.ToUInt64(optionData[i][3])).ToString("yyyyMMMdd");
+                string currDateTime = crDateTime.AddMilliseconds(Convert.ToUInt64(optionData[i][1]* 1000 + 4.32e+7)).ToString("yyyyMMMdd");
                 if (isLast)
                 {
-                    if(Convert.ToUInt64(optionData[i][5]) > maxStrike)
+                    if(optionData[i][3] > maxStrike)
                     {
-                        maxStrike = Convert.ToUInt64(optionData[i][5]);
+                        maxStrike = optionData[i][3];
                     }
-                    if (Convert.ToUInt64(optionData[i][5]) < minStrike)
+                    if (optionData[i][3] < minStrike)
                     {
-                        minStrike = Convert.ToUInt64(optionData[i][5]);
+                        minStrike = optionData[i][3];
                     }
                 }
                 if (currDateTime != prevDateTime || isLast)
@@ -55,55 +55,42 @@ namespace Optkl.Utilities
                     if (isFirst)
                     {
                         customStrike.expireDate.Add(prevDateTime, newData);
-                        dataStrike.tradeDate.Add(tradeDate, customStrike);
+                        dataStrike.tradeDate.Add(dataParameters.TradeDate, customStrike);
                         isFirst = false;
                     }
                     else
                     {
-                        dataStrike.tradeDate[tradeDate].expireDate.Add(prevDateTime, newData);
+                        dataStrike.tradeDate[dataParameters.TradeDate].expireDate.Add(prevDateTime, newData);
                     }
-
-
-                    //labelArray.Add(prevDateTime); // ordered list of labels 
-                    trackLength += (maxStrike - minStrike);
-                    //numberPies++;// increase the track length (will have to remove 1 pie spaces due to the loop
+                    trackCircumference += (maxStrike - minStrike);
+                    numberPies++;
                     minStrike = 100000000f; 
                     maxStrike = 0f;
                     prevDateTime = currDateTime; 
                 }
-                if (Convert.ToUInt64(optionData[i][5]) > maxStrike)
+                if (optionData[i][3] > maxStrike)
                 {
-                    maxStrike = Convert.ToUInt64(optionData[i][5]);
+                    maxStrike = optionData[i][3];
                 }
-                if (Convert.ToUInt64(optionData[i][5]) < minStrike)
+                if (optionData[i][3] < minStrike)
                 {
-                    minStrike = Convert.ToUInt64(optionData[i][5]);
+                    minStrike = optionData[i][3];
                 }
-                FindMaxValues(optionData[i], initialParameters, dataMax, customMax, tradeDate);
-                //findSingleMaxValues(optionData[i]);
-                //if (Convert.ToInt64(optionData[i][3]) != previousExpireDate)
-                //{
-                //    tempArray.Reverse();
-                //    optklArray = Utilities.Combine(optklArray, tempArray).ToList();
-                //    tempArray.Clear();
-                //    previousExpireDate = Convert.ToInt64(optionData[i][3]);
-                //}
-                //tempArray.Add(optionData[i]);
+                FindMaxValues(optionData[i], initialParameters, dataMax, customMax, dataParameters.TradeDate);
             }
-            //labelArray.Reverse();
-            //tempArray.Reverse();
-            //optklArray = Utilities.Combine(optklArray, tempArray).ToList();
-            //optklArray.Reverse();
-            //trackLength *= 2;
-            //pieSpace = percentPieSpace * trackLength / 100;
-            //if (showLabel)
-            //    labelSpace = percentLabelSpace * trackLength / 100;
-            //else
-            //    labelSpace = pieSpace;
-            //trackLength += (float)labelSpace + (numberPies * 2 - 1) * pieSpace; //remove last pie space
+            trackCircumference *= 2;
+            float pieSpace = dataParameters.PieSpacer / 100 * trackCircumference;
+            float powerWedgeSpace = dataParameters.PowerWedge / 100 * trackCircumference;
+            trackCircumference += powerWedgeSpace + (numberPies * 2 - 1) * pieSpace;
+            SettingsData customSettings = new SettingsData();
+            customSettings.settings = new SettingsNestedDict();
+            customSettings.settings.Add("TrackCircumference", trackCircumference);
+            customSettings.settings.Add("PieSpace", pieSpace);
+            customSettings.settings.Add("PowerWedgeSpace", powerWedgeSpace);
+            settings.tradeDate.Add(dataParameters.TradeDate, customSettings);
         }
 
-        private void initializeDataMax(InitialParameters initialParameters, string tradeDate, DataMax dataMax, MaxData customMax)
+        private void initializeDataMax(InitialParameters initialParameters, DataMax dataMax, MaxData customMax, string tradeDate)
         {
             
             customMax.maxValues = new DataMaxNestedDict();
@@ -120,13 +107,13 @@ namespace Optkl.Utilities
             dataMax.tradeDate.Add(tradeDate, customMax);
         }
 
-        private void FindMaxValues(object[] optionList, InitialParameters initialParameters, DataMax dataMax, MaxData customMax, string tradeDate)
+        private void FindMaxValues(float[] optionList, InitialParameters initialParameters, DataMax dataMax, MaxData customMax, string tradeDate)
         {
             foreach(string key in initialParameters.parameterPosition.Keys)
             { 
                 if (initialParameters.parameterPosition[key].pair != 0)
                 {
-                    double valueNumber = Convert.ToDouble(optionList[initialParameters.parameterPosition[key].index]);
+                    float valueNumber = optionList[initialParameters.parameterPosition[key].index];
                     if (valueNumber != 0)
                     {
                         if (Math.Abs(valueNumber) > Math.Abs(dataMax.tradeDate[tradeDate].maxValues[initialParameters.parameterPosition[key].name])) {

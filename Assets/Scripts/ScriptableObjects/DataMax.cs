@@ -21,5 +21,5 @@ namespace Optkl.Data
     public class DataMaxMainDict : SerializableDictionary<string, MaxData> { }
 
     [System.Serializable]
-    public class DataMaxNestedDict : SerializableDictionary<string, double> { }
+    public class DataMaxNestedDict : SerializableDictionary<string, float> { }
 }

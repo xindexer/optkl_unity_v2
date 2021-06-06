@@ -14,7 +14,7 @@ namespace Optkl.Data
 
     public class StoragelData
     {
-        public object[][] optionDataSet;
+        public float[][] optionDataSet;
     }
 
 

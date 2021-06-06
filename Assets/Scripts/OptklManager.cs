@@ -16,13 +16,19 @@ namespace Optkl
         private DataStorage dataStorage;
 
         [SerializeField]
+        private TrackStorage trackStorage;
+
+        [SerializeField]
+        private TrackLabels trackLabels;
+
+        [SerializeField]
         private DataParameters dataParameters;
 
         [SerializeField]
-        private DataLabels dataLabels;
+        private DataMax dataMax;
 
         [SerializeField]
-        private DataMax dataMax;
+        private Settings settings;
 
         [SerializeField]
         private Logger logger;
@@ -38,15 +44,19 @@ namespace Optkl
 
         private LoadData loadData = new LoadData();
 
-        private float buildTime = 0;
+        public GameObject threeDTextPrefab;
+
+
+        private float buildTime;
 
         private void Awake()
         {
             buildTime = Time.realtimeSinceStartup;
+            trackStorage.tradeDate.Clear();
             dataStorage.tradeDate.Clear();
             dataStrike.tradeDate.Clear();
-            dataLabels.tradeDate.Clear();
             dataMax.tradeDate.Clear();
+            settings.tradeDate.Clear();
             StartCanvas();
         }
 
@@ -63,6 +73,7 @@ namespace Optkl
             loadingCanvas.gameObject.SetActive(true);
             logger.Log($"Loading {data.Symbol} for {data.JsonTradeDate}");
             logger.StartTimer();
+            dataParameters.TradeDate = data.FormatTradeDate;
             StartCoroutine(loadData.LoadFirstData(data, dataStorage, this));
         }
 
@@ -73,8 +84,33 @@ namespace Optkl
             StoragelData storageData = dataStorage.tradeDate[tradeDate];
             logger.StartTimer();
             LabelParameters labelParameters = new LabelParameters();
-            labelParameters.BuildLabels(storageData.optionDataSet, dataParameters, dataLabels, dataStrike, dataMax);
+            labelParameters.BuildLabels(storageData.optionDataSet, dataParameters, dataStrike, dataMax, settings);
             logger.EndTimer("Build Labels");
+            logger.StartTimer();
+            TickParameters tickParameters = new TickParameters();
+            tickParameters.BuildTicks(
+                true,
+                storageData.optionDataSet,
+                trackStorage,
+                dataParameters,
+                dataStrike,
+                dataMax,
+                settings,
+                trackLabels);
+            tickParameters.BuildTicks(
+                false,
+                storageData.optionDataSet,
+                trackStorage,
+                dataParameters,
+                dataStrike,
+                dataMax,
+                settings,
+                trackLabels);
+            logger.EndTimer("Build Ticks");
+            //logger.StartTimer();
+            //TrackParameters trackParameters = new TrackParameters();
+            //trackParameters.BuildTracks(storageData.optionDataSet, dataParameters, dataStrike, dataMax, settings);
+            //logger.EndTimer("Build Tracks");
         }
     }
 }

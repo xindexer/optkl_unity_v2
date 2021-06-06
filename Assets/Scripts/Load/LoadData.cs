@@ -21,6 +21,7 @@ namespace Optkl.Data {
             {
                 JsonData jsnData = JsonConvert.DeserializeObject<JsonData>(www.downloadHandler.text);
                 JsonList jsnArray = JsonConvert.DeserializeObject<JsonList>("{\"symbolData\":" + jsnData.data + "}");
+
                 if (jsnArray.symbolData.Length == 0)
                 {
                     //trigger event?
