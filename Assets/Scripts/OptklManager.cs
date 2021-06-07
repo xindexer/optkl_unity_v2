@@ -1,8 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Optkl.Utilities;
 using Optkl.Data;
+using System;
 
 namespace Optkl
 {
@@ -10,13 +9,25 @@ namespace Optkl
     public class OptklManager : MonoBehaviour
     {
         [SerializeField]
+        private DrawManager drawManager;
+
+        [SerializeField]
         private DataStrike dataStrike;
 
         [SerializeField]
         private DataStorage dataStorage;
 
         [SerializeField]
-        private TrackStorage trackStorage;
+        private TrackData trackData;
+
+        [SerializeField]
+        private TrackColors trackColors;
+
+        [SerializeField]
+        private ColorPalette colorPalette;
+
+        [SerializeField]
+        private TexturesAndMaterials texturesAndMaterials;
 
         [SerializeField]
         private TrackLabels trackLabels;
@@ -44,20 +55,23 @@ namespace Optkl
 
         private LoadData loadData = new LoadData();
 
-        public GameObject threeDTextPrefab;
-
-
-        private float buildTime;
+        private int blockOnValidate = 0;
 
         private void Awake()
         {
-            buildTime = Time.realtimeSinceStartup;
-            trackStorage.tradeDate.Clear();
+            ClearCalculatedVariables();
             dataStorage.tradeDate.Clear();
+            StartCanvas();
+        }
+
+        private void ClearCalculatedVariables()
+        {
+            trackData.tradeDate.Clear();
+            trackColors.tradeDate.Clear();
+            trackLabels.tradeDate.Clear();
             dataStrike.tradeDate.Clear();
             dataMax.tradeDate.Clear();
             settings.tradeDate.Clear();
-            StartCanvas();
         }
 
         private void StartCanvas()
@@ -77,21 +91,22 @@ namespace Optkl
             StartCoroutine(loadData.LoadFirstData(data, dataStorage, this));
         }
 
-        public void InitialLoadComplete(string tradeDate)
+        public void BuildIRIS(string tradeDate, Boolean redraw = false)
         {
 
-            logger.EndTimer("Load Data");
+            if (!redraw)
+                logger.EndTimer("Load Data");
             StoragelData storageData = dataStorage.tradeDate[tradeDate];
             logger.StartTimer();
             LabelParameters labelParameters = new LabelParameters();
             labelParameters.BuildLabels(storageData.optionDataSet, dataParameters, dataStrike, dataMax, settings);
-            logger.EndTimer("Build Labels");
-            logger.StartTimer();
+            //logger.EndTimer("Build Labels");
+            //logger.StartTimer();
             TickParameters tickParameters = new TickParameters();
             tickParameters.BuildTicks(
                 true,
                 storageData.optionDataSet,
-                trackStorage,
+                trackData,
                 dataParameters,
                 dataStrike,
                 dataMax,
@@ -100,17 +115,51 @@ namespace Optkl
             tickParameters.BuildTicks(
                 false,
                 storageData.optionDataSet,
-                trackStorage,
+                trackData,
                 dataParameters,
                 dataStrike,
                 dataMax,
                 settings,
                 trackLabels);
-            logger.EndTimer("Build Ticks");
+            //logger.EndTimer("Build Ticks");
             //logger.StartTimer();
-            //TrackParameters trackParameters = new TrackParameters();
-            //trackParameters.BuildTracks(storageData.optionDataSet, dataParameters, dataStrike, dataMax, settings);
+            TrackParameters trackParameters = new TrackParameters();
+            trackParameters.BuildTracks(
+                storageData.optionDataSet,
+                trackData,
+                trackColors,
+                colorPalette,
+                dataParameters,
+                dataStrike,
+                dataMax,
+                settings);
             //logger.EndTimer("Build Tracks");
+            //logger.StartTimer();
+            drawManager.DrawOptions(
+                trackData,
+                trackColors,
+                colorPalette,
+                texturesAndMaterials,
+                dataParameters,
+                redraw);
+            loadingCanvas.gameObject.SetActive(false);
+            runningCanvas.gameObject.SetActive(true);
+            logger.EndTimer("Draw IRIS");
+        }
+
+        public void RespondToEvent()
+        {
+            if (blockOnValidate < 2)
+            {
+                blockOnValidate++;
+            }
+            else
+            {
+                Debug.Log(dataParameters.ShowGreek["delta"]);
+                ClearCalculatedVariables();
+                Camera.main.backgroundColor = colorPalette.backGroundColor;
+                BuildIRIS(dataParameters.TradeDate, true);
+            }
         }
     }
 }

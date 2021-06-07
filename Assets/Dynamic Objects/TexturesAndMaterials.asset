@@ -1,0 +1,84 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 561220fecec9a485c80ecf845fe6978e, type: 3}
+  m_Name: TexturesAndMaterials
+  m_EditorClassIdentifier: 
+  OptklTextures:
+    m_val: 7
+    m_keys:
+    - yte
+    - Oi
+    - Volu
+    - BidPx
+    - Value
+    - AskP
+    - BidIv
+    - MidIv
+    - AskIv
+    - smoothSmvVol
+    - iRate
+    - divRate
+    - residualqateData
+    - extVol
+    - extTheo
+    - delta
+    - gamma
+    - theta
+    - vega
+    - rho
+    - phi
+    - driftlessTheta
+    m_values:
+    - Texture: {fileID: 0}
+      Material: {fileID: 0}
+    - Texture: {fileID: 0}
+      Material: {fileID: 0}
+    - Texture: {fileID: 0}
+      Material: {fileID: 0}
+    - Texture: {fileID: 0}
+      Material: {fileID: 0}
+    - Texture: {fileID: 0}
+      Material: {fileID: 0}
+    - Texture: {fileID: 0}
+      Material: {fileID: 0}
+    - Texture: {fileID: 0}
+      Material: {fileID: 0}
+    - Texture: {fileID: 0}
+      Material: {fileID: 0}
+    - Texture: {fileID: 0}
+      Material: {fileID: 0}
+    - Texture: {fileID: 0}
+      Material: {fileID: 0}
+    - Texture: {fileID: 0}
+      Material: {fileID: 0}
+    - Texture: {fileID: 0}
+      Material: {fileID: 0}
+    - Texture: {fileID: 0}
+      Material: {fileID: 0}
+    - Texture: {fileID: 0}
+      Material: {fileID: 0}
+    - Texture: {fileID: 0}
+      Material: {fileID: 0}
+    - Texture: {fileID: 2800000, guid: e0bbd410ad8edec47933d9b4dd16665c, type: 3}
+      Material: {fileID: 2100000, guid: b6e40ab160e95324c826c198821fd97c, type: 2}
+    - Texture: {fileID: 0}
+      Material: {fileID: 0}
+    - Texture: {fileID: 0}
+      Material: {fileID: 0}
+    - Texture: {fileID: 0}
+      Material: {fileID: 0}
+    - Texture: {fileID: 0}
+      Material: {fileID: 0}
+    - Texture: {fileID: 0}
+      Material: {fileID: 0}
+    - Texture: {fileID: 0}
+      Material: {fileID: 0}

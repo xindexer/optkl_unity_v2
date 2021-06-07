@@ -38,9 +38,9 @@ namespace Optkl.Utilities {
             { "phi", new OptionDataParameters(29, "phi", 19) },
             { "driftlessTheta", new OptionDataParameters(30, "driftlessTheta", 20) },
             { "extVol", new OptionDataParameters(31, "extVol", 21) },
-            { "extCTheo", new OptionDataParameters(32, "extCTheo", 22) },
-            { "extPtheo", new OptionDataParameters(33, "extPtheo", 23) },
-            { "spot_px", new OptionDataParameters(34, "spot_px", 24) },
+            { "extCTheo", new OptionDataParameters(32, "extTheo", 22) },
+            { "extPtheo", new OptionDataParameters(33, "exttheo", 22) },
+            { "spot_px", new OptionDataParameters(34, "spot_px", 23) },
             { "trade_date", new OptionDataParameters(35, "trade_date", 0) }
         };
             

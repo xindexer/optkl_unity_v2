@@ -16,7 +16,7 @@ namespace Optkl.Utilities
             Settings settings)
         {
             DateTime pvDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc); 
-            string prevDateTime = pvDateTime.AddMilliseconds(Convert.ToUInt64(optionData[0][1] * 1000 + 4.32e+7)).ToString("yyyyMMMdd");
+            string prevDateTime = pvDateTime.AddMilliseconds(optionData[0][1] * 1000 + 4.32e+7).ToString("yyyyMMMdd");
             Boolean isLast = false;
             Boolean isFirst = true;
             float minStrike = 100000000f;
@@ -31,7 +31,7 @@ namespace Optkl.Utilities
                 if (i == optionData.Length - 1)
                     isLast = true;
                 DateTime crDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
-                string currDateTime = crDateTime.AddMilliseconds(Convert.ToUInt64(optionData[i][1]* 1000 + 4.32e+7)).ToString("yyyyMMMdd");
+                string currDateTime = crDateTime.AddMilliseconds(optionData[i][1]* 1000 + 4.32e+7).ToString("yyyyMMMdd");
                 if (isLast)
                 {
                     if(optionData[i][3] > maxStrike)
@@ -82,6 +82,7 @@ namespace Optkl.Utilities
             float pieSpace = dataParameters.PieSpacer / 100 * trackCircumference;
             float powerWedgeSpace = dataParameters.PowerWedge / 100 * trackCircumference;
             trackCircumference += powerWedgeSpace + (numberPies * 2 - 1) * pieSpace;
+
             SettingsData customSettings = new SettingsData();
             customSettings.settings = new SettingsNestedDict();
             customSettings.settings.Add("TrackCircumference", trackCircumference);

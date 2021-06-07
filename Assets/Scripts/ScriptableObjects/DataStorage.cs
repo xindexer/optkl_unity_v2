@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections.Generic;
 using RotaryHeart.Lib.SerializableDictionaryPro;
 
 
@@ -17,8 +16,6 @@ namespace Optkl.Data
         public float[][] optionDataSet;
     }
 
-
     [System.Serializable]
     public class DataStorageMainDict : SerializableDictionary<string, StoragelData> { }
-
 }

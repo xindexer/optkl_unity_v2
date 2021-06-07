@@ -1,170 +1,283 @@
+using System;
 using UnityEngine;
+using Optkl.Events;
+using RotaryHeart.Lib.SerializableDictionaryPro;
 
-[CreateAssetMenu(menuName = "Optkl/Data Parameters")]
-public class DataParameters : ScriptableObject
+namespace Optkl.Data
 {
-    [SerializeField]
-    private string tradeDate;
-    public string TradeDate
+    [CreateAssetMenu(menuName = "Optkl/Data Parameters")]
+    public class DataParameters : ScriptableObject
     {
-        get
-        {
-            return tradeDate;
-        }
-        set
-        {
-            tradeDate = value;
-        }
-    }
+        public GameEvent changeParameters;
 
-    [SerializeField]
-    [Range(0, 250)]
-    private int trackSpacer = 100;
-    public int TrackSpacer
-    {
-        get
+#if UNITY_EDITOR
+        private void OnValidate() { UnityEditor.EditorApplication.delayCall += _OnValidate; }
+        private void _OnValidate()
         {
-            return trackSpacer;
+            changeParameters.Raise();
         }
-        set
-        {
-            trackSpacer = value;
-        }
-    }
+#endif
 
-    [SerializeField]
-    [Range(50, 1000)]
-    private int trackThickness = 50;
-    public int TrackThickness
-    {
-        get
+        [SerializeField]
+        private string tradeDate;
+        public string TradeDate
         {
-            return trackThickness;
+            get
+            {
+                return tradeDate;
+            }
+            set
+            {
+                tradeDate = value;
+            }
         }
-        set
-        {
-            trackThickness = value;
-        }
-    }
 
-    [SerializeField]
-    [Range(2000, 6000)]
-    private int trackRadius = 2000;
-    public int TrackRadius
-    {
-        get
+        [SerializeField]
+        [Range(0, 250)]
+        private int trackSpacer = 100;
+        public int TrackSpacer
         {
-            return trackRadius;
+            get
+            {
+                return trackSpacer;
+            }
+            set
+            {
+                trackSpacer = value;
+            }
         }
-        set
-        {
-            trackRadius = value;
-        }
-    }
 
-    [SerializeField]
-    [Range(0, 500)]
-    private int tickHeight = 30;
-    public int TickHeight
-    {
-        get
+        [SerializeField]
+        [Range(0f, 10f)]
+        private float pieSpacer = 3f;
+        public float PieSpacer
         {
-            return tickHeight;
+            get
+            {
+                return pieSpacer;
+            }
+            set
+            {
+                pieSpacer = value;
+            }
         }
-        set
-        {
-            tickHeight = value;
-        }
-    }
 
-    [SerializeField]
-    [Range(0, 10)]
-    private int tickWidth = 1;
-    public int TickWidth
-    {
-        get
+        [SerializeField]
+        [Range(0f, 20f)]
+        private float powerWedge = 10f;
+        public float PowerWedge
         {
-            return tickWidth;
+            get
+            {
+                return powerWedge;
+            }
+            set
+            {
+                powerWedge = value;
+            }
         }
-        set
-        {
-            tickWidth = value;
-        }
-    }
 
-    [SerializeField]
-    [Range(6000, 14000)]
-    private int tickRadius = 10000;
-    public int TickRadius
-    {
-        get
+        [SerializeField]
+        [Range(50, 1000)]
+        private int trackThickness = 150;
+        public int TrackThickness
         {
-            return tickRadius;
+            get
+            {
+                return trackThickness;
+            }
+            set
+            {
+                trackThickness = value;
+            }
         }
-        set
-        {
-            tickRadius = value;
-        }
-    }
 
-    [SerializeField]
-    [Range(10000, 16000)]
-    private int labelRadius = 11000;
-    public int LabelRadius
-    {
-        get
+        [SerializeField]
+        [Range(0.05f, 5f)]
+        private float lineSize = 1f;
+        public float LineSize
         {
-            return labelRadius;
+            get
+            {
+                return lineSize;
+            }
+            set
+            {
+                lineSize = value;
+            }
         }
-        set
-        {
-            labelRadius = value;
-        }
-    }
 
-    [SerializeField]
-    [Range(1000, 5000)]
-    private int scatterRadius = 1000;
-    public int ScatterRadius
-    {
-        get
+        [SerializeField]
+        [Range(5000, 8000)]
+        private int trackRadius = 6000;
+        public int TrackRadius
         {
-            return scatterRadius;
+            get
+            {
+                return trackRadius;
+            }
+            set
+            {
+                trackRadius = value;
+            }
         }
-        set
-        {
-            scatterRadius = value;
-        }
-    }
 
-    [SerializeField]
-    [Range(0f, 10f)]
-    private float pieSpacer = 3f;
-    public float PieSpacer
-    {
-        get
+        [SerializeField]
+        [Range(0, 500)]
+        private int tickHeight = 30;
+        public int TickHeight
         {
-            return pieSpacer;
+            get
+            {
+                return tickHeight;
+            }
+            set
+            {
+                tickHeight = value;
+            }
         }
-        set
-        {
-            pieSpacer = value;
-        }
-    }
 
-    [SerializeField]
-    [Range(0f, 20f)]
-    private float powerWedge = 10f;
-    public float PowerWedge
-    {
-        get
+        [SerializeField]
+        [Range(0, 10)]
+        private int tickWidth = 1;
+        public int TickWidth
         {
-            return powerWedge;
+            get
+            {
+                return tickWidth;
+            }
+            set
+            {
+                tickWidth = value;
+            }
         }
-        set
-        {
-            powerWedge = value;
-        }
-    }
 
+        [SerializeField]
+        [Range(6000, 14000)]
+        private int tickRadius = 10000;
+        public int TickRadius
+        {
+            get
+            {
+                return tickRadius;
+            }
+            set
+            {
+                tickRadius = value;
+            }
+        }
+
+        [SerializeField]
+        [Range(10000, 16000)]
+        private int labelRadius = 11000;
+        public int LabelRadius
+        {
+            get
+            {
+                return labelRadius;
+            }
+            set
+            {
+                labelRadius = value;
+            }
+        }
+
+        [SerializeField]
+        [Range(1000, 5000)]
+        private int greekInnerRadius = 1000;
+        public int GreekInnerRadius
+        {
+            get
+            {
+                return greekInnerRadius;
+            }
+            set
+            {
+                greekInnerRadius = value;
+            }
+        }
+
+        [SerializeField]
+        [Range(3000, 10000)]
+        private int greekOuterRadius = 1000;
+        public int GreetOuterRadius
+        {
+            get
+            {
+                return greekOuterRadius;
+            }
+            set
+            {
+                greekOuterRadius = value;
+            }
+        }
+
+        [SerializeField]
+        [Range(0.05f, 50f)]
+        private float greekSize = 1f;
+        public float GreekSize
+        {
+            get
+            {
+                return greekSize;
+            }
+            set
+            {
+                greekSize = value;
+            }
+        }
+
+        [SerializeField]
+        [Range(0f, .5f)]
+        private float greekOpacity = 0.3f;
+        public float GreekOpacity
+        {
+            get
+            {
+                return greekOpacity;
+            }
+            set
+            {
+                greekOpacity = value;
+            }
+        }
+
+        [SerializeField]
+        public TrackOrderDict TrackOrder = new TrackOrderDict()
+        {
+           { "yte", true },
+           { "Oi", true },
+           { "Volu", true },
+           { "BidPx", true },
+           { "Value", true },
+           { "AskP", true },
+           { "BidIv", true },
+           { "MidIv", true },
+           { "AskIv", true },
+           { "smoothSmvVol", true },
+           { "iRate", true },
+           { "divRate", true },
+           { "residualqateData", true },
+           { "extVol", true },
+           { "extTheo", true }
+        };
+
+        [System.Serializable]
+        public class TrackOrderDict : SerializableDictionary<string, Boolean> { };
+
+        [SerializeField]
+        public ShowGreekDict ShowGreek = new ShowGreekDict()
+        {
+           { "delta", true },
+           { "gamma", true },
+           { "theta", true },
+           { "vega", true },
+           { "rho", true },
+           { "phi", true },
+           { "driftlessTheta", true },
+        };
+
+        [System.Serializable]
+        public class ShowGreekDict : SerializableDictionary<string, Boolean> { };
+    }
 }

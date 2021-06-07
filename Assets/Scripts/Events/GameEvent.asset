@@ -9,13 +9,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: be0a065065f9a4182855ac3bf81acd33, type: 3}
-  m_Name: DataParameters
+  m_Script: {fileID: 11500000, guid: 9b0fb73f5e30f405daa8d5682850b3cc, type: 3}
+  m_Name: GameEvent
   m_EditorClassIdentifier: 
-  tradeDate: 
-  trackSpacer: 100
-  trackThickness: 50
-  trackRadius: 2000
-  pieSpacer: 3
-  powerWedge: 10
-  scatterRadius: 1000

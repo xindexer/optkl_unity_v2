@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class JsonData
 {
@@ -12,9 +13,6 @@ public class JsonList
 
 public class OptionDataParameters
 {
-
-    public OptionDataParameters() { }
-
     public OptionDataParameters(int ind, string nm, int pr)
     {
         index = ind;
@@ -41,5 +39,37 @@ public class Label
         Text = text;
         Location = location;
         Rotation = rotation;
+    }
+}
+
+[Serializable]
+public class TrackOrder
+{
+    [SerializeField]
+    public string Name;
+
+    [SerializeField]
+    public Boolean Active;
+
+    public TrackOrder(string name, Boolean active)
+    {
+        Name = name;
+        Active = active;
+    }
+}
+
+[Serializable]
+public class OptklTexturesAndMaterials
+{
+    [SerializeField]
+    public Texture Texture;
+
+    [SerializeField]
+    public Material Material;
+
+    public OptklTexturesAndMaterials(Texture texture, Material material)
+    {
+        Texture = texture;
+        Material = material;
     }
 }

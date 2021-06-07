@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 using Newtonsoft.Json;
@@ -34,7 +33,7 @@ namespace Optkl.Data {
                     customStorage.optionDataSet = jsnArray.symbolData;
                     dataStorage.tradeDate.Add(data.FormatTradeDate, customStorage);
 
-                    optklManager.InitialLoadComplete(data.FormatTradeDate);
+                    optklManager.BuildIRIS(data.FormatTradeDate);
                     //notFound.gameObject.SetActive(false);
                 }
             }
