@@ -111,7 +111,7 @@ namespace Optkl.Utilities
         private void FindMaxValues(float[] optionList, InitialParameters initialParameters, DataMax dataMax, MaxData customMax, string tradeDate)
         {
             foreach(string key in initialParameters.parameterPosition.Keys)
-            { 
+            {
                 if (initialParameters.parameterPosition[key].pair != 0)
                 {
                     float valueNumber = optionList[initialParameters.parameterPosition[key].index];

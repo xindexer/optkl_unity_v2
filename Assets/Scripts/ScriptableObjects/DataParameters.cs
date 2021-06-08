@@ -33,6 +33,21 @@ namespace Optkl.Data
         }
 
         [SerializeField]
+        [Range(5000, 8000)]
+        private int trackRadius = 6000;
+        public int TrackRadius
+        {
+            get
+            {
+                return trackRadius;
+            }
+            set
+            {
+                trackRadius = value;
+            }
+        }
+
+        [SerializeField]
         [Range(0, 250)]
         private int trackSpacer = 100;
         public int TrackSpacer
@@ -94,91 +109,16 @@ namespace Optkl.Data
 
         [SerializeField]
         [Range(0.05f, 5f)]
-        private float lineSize = 1f;
-        public float LineSize
+        private float trackLineWidth = 1f;
+        public float TrackLineWidth
         {
             get
             {
-                return lineSize;
+                return trackLineWidth;
             }
             set
             {
-                lineSize = value;
-            }
-        }
-
-        [SerializeField]
-        [Range(5000, 8000)]
-        private int trackRadius = 6000;
-        public int TrackRadius
-        {
-            get
-            {
-                return trackRadius;
-            }
-            set
-            {
-                trackRadius = value;
-            }
-        }
-
-        [SerializeField]
-        [Range(0, 500)]
-        private int tickHeight = 30;
-        public int TickHeight
-        {
-            get
-            {
-                return tickHeight;
-            }
-            set
-            {
-                tickHeight = value;
-            }
-        }
-
-        [SerializeField]
-        [Range(0, 10)]
-        private int tickWidth = 1;
-        public int TickWidth
-        {
-            get
-            {
-                return tickWidth;
-            }
-            set
-            {
-                tickWidth = value;
-            }
-        }
-
-        [SerializeField]
-        [Range(6000, 14000)]
-        private int tickRadius = 10000;
-        public int TickRadius
-        {
-            get
-            {
-                return tickRadius;
-            }
-            set
-            {
-                tickRadius = value;
-            }
-        }
-
-        [SerializeField]
-        [Range(10000, 16000)]
-        private int labelRadius = 11000;
-        public int LabelRadius
-        {
-            get
-            {
-                return labelRadius;
-            }
-            set
-            {
-                labelRadius = value;
+                trackLineWidth = value;
             }
         }
 
@@ -243,27 +183,174 @@ namespace Optkl.Data
         }
 
         [SerializeField]
+        private Boolean negativeGreeks = false;
+        public Boolean NegativeGreeks
+        {
+            get
+            {
+                return negativeGreeks;
+            }
+            set
+            {
+                negativeGreeks = value;
+            }
+        }
+
+        [SerializeField]
+        [Range(6000, 14000)]
+        private int tickRadius = 10000;
+        public int TickRadius
+        {
+            get
+            {
+                return tickRadius;
+            }
+            set
+            {
+                tickRadius = value;
+            }
+        }
+
+        [SerializeField]
+        [Range(0, 500)]
+        private int tickHeight = 30;
+        public int TickHeight
+        {
+            get
+            {
+                return tickHeight;
+            }
+            set
+            {
+                tickHeight = value;
+            }
+        }
+
+        [SerializeField]
+        [Range(0, 10)]
+        private int tickWidth = 1;
+        public int TickWidth
+        {
+            get
+            {
+                return tickWidth;
+            }
+            set
+            {
+                tickWidth = value;
+            }
+        }
+
+        [SerializeField]
+        private Boolean showTicks = true;
+        public Boolean ShowTicks
+        {
+            get
+            {
+                return showTicks;
+            }
+            set
+            {
+                showTicks = value;
+            }
+        }
+
+        [SerializeField]
+        private Boolean showTickLabels = true;
+        public Boolean ShowTickLabels
+        {
+            get
+            {
+                return showTickLabels;
+            }
+            set
+            {
+                showTickLabels = value;
+            }
+        }
+
+        [SerializeField]
+        [Range(0, 10)]
+        private float tickLabelSize = 1f;
+        public float TickLabelSize
+        {
+            get
+            {
+                return tickLabelSize;
+            }
+            set
+            {
+                tickLabelSize = value;
+            }
+        }
+
+        [SerializeField]
+        [Range(10000, 16000)]
+        private int labelRadius = 11000;
+        public int LabelRadius
+        {
+            get
+            {
+                return labelRadius;
+            }
+            set
+            {
+                labelRadius = value;
+            }
+        }
+
+        [SerializeField]
+        [Range(0, 10)]
+        private float labelSize = 1f;
+        public float LabelSize
+        {
+            get
+            {
+                return labelSize;
+            }
+            set
+            {
+                labelSize = value;
+            }
+        }
+
+        [SerializeField]
+        private Boolean showLabels = true;
+        public Boolean ShowLabels
+        {
+            get
+            {
+                return showLabels;
+            }
+            set
+            {
+                showLabels = value;
+            }
+        }
+
+        [SerializeField]
         public TrackOrderDict TrackOrder = new TrackOrderDict()
         {
-           { "yte", true },
-           { "Oi", true },
-           { "Volu", true },
-           { "BidPx", true },
-           { "Value", true },
-           { "AskP", true },
-           { "BidIv", true },
-           { "MidIv", true },
-           { "AskIv", true },
-           { "smoothSmvVol", true },
-           { "iRate", true },
-           { "divRate", true },
-           { "residualqateData", true },
-           { "extVol", true },
-           { "extTheo", true }
+           { "Oi", new TrackControl(true, 1) },
+           { "Volu", new TrackControl(true, 1) },
+           { "BidPx", new TrackControl(true, 1) },
+           { "Value", new TrackControl(true, 1) },
+           { "AskPx", new TrackControl(true, 1) },
+           { "BidIv", new TrackControl(true, 1) },
+           { "MidIv", new TrackControl(true, 1) },
+           { "AskIv", new TrackControl(true, 1) },
+           { "smoothSmvVol", new TrackControl(true, 1) },
+           { "iRate", new TrackControl(true, 1) },
+           { "divRate", new TrackControl(true, 1) },
+           { "residualRateData", new TrackControl(true, 1) },
+           { "extVol", new TrackControl(true, 1) },
+           { "extTheo", new TrackControl(true, 1) },
+           { "yte", new TrackControl(true, 0.5f) },
+           { "inTheMoney", new TrackControl(true, 0.5f) }
         };
 
         [System.Serializable]
-        public class TrackOrderDict : SerializableDictionary<string, Boolean> { };
+        public class TrackOrderDict : SerializableDictionary<string, TrackControl> { };
 
         [SerializeField]
         public ShowGreekDict ShowGreek = new ShowGreekDict()

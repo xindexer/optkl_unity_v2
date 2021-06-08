@@ -203,6 +203,8 @@ namespace Optkl.Utilities
                     rotate
                 );
                 labelsContainer.labelList.Add(tickLabel);
+                newData.vectorList.Add(arc);
+                newData.vectorList.Add(tick);
             }
             else if (labelCheck % minorTick == 0)
             {
@@ -211,9 +213,9 @@ namespace Optkl.Utilities
                     (float)((dataParameters.TickRadius + dataParameters.TickHeight) * Math.Sin(theta)),
                     0f
                 );
-            }
-            newData.vectorList.Add(arc);
-            newData.vectorList.Add(tick);
+                newData.vectorList.Add(arc);
+                newData.vectorList.Add(tick);
+            }            
         }
     }
 }

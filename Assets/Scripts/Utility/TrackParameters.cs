@@ -12,7 +12,7 @@ namespace Optkl.Utilities
             float[][] optionData,
             TrackData trackData,
             TrackColors trackColors,
-            ColorPalette colorPalette,
+            ColorControl colorControl,
             DataParameters dataParameters,
             DataStrike dataStrike,
             DataMax dataMax,
@@ -28,119 +28,150 @@ namespace Optkl.Utilities
             DateTime pvDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
             string previousDateTime = pvDateTime.AddMilliseconds(optionData[0][1] * 1000 + 4.32e+7).ToString("yyyyMMMdd");
             float strikeDiff = dataStrike.tradeDate[dataParameters.TradeDate].expireDate[previousDateTime].strikeMin;
-            float greekDistance = dataParameters.GreetOuterRadius - dataParameters.GreekInnerRadius;
+            float greekRange = dataParameters.GreetOuterRadius - dataParameters.GreekInnerRadius;
             InitialParameters initialParameters = new InitialParameters();
+            Dictionary<string, TrackDataVectorList> trackDataList = new Dictionary<string, TrackDataVectorList>();
 
             TrackDataList yte = new TrackDataList();
             yte.vectorList = new List<Vector3>();
             TrackColorsList yteColors = new TrackColorsList();
             yteColors.colorList = new List<Color32>();
+            trackDataList.Add("yte", new TrackDataVectorList(yte, yteColors, "yte", "yte"));
 
             TrackDataList Oi = new TrackDataList();
             Oi.vectorList = new List<Vector3>();
             TrackColorsList OiColors = new TrackColorsList();
             OiColors.colorList = new List<Color32>();
+            trackDataList.Add("Oi", new TrackDataVectorList(Oi, OiColors, "cOi", "pOi"));
 
             TrackDataList Volu = new TrackDataList();
             Volu.vectorList = new List<Vector3>();
             TrackColorsList VoluColors = new TrackColorsList();
             VoluColors.colorList = new List<Color32>();
-            
+            trackDataList.Add("Volu", new TrackDataVectorList(Volu, VoluColors, "cVolu", "pVolu"));
+
             TrackDataList BidPx = new TrackDataList();
             BidPx.vectorList = new List<Vector3>();
             TrackColorsList BidPxColors = new TrackColorsList();
             BidPxColors.colorList = new List<Color32>();
+            trackDataList.Add("BidPx", new TrackDataVectorList(BidPx, BidPxColors, "cBidPx", "pBidPx"));
 
             TrackDataList Value = new TrackDataList();
             Value.vectorList = new List<Vector3>();
             TrackColorsList ValueColors = new TrackColorsList();
             ValueColors.colorList = new List<Color32>();
+            trackDataList.Add("Value", new TrackDataVectorList(Value, ValueColors, "cValue", "pValue"));
 
             TrackDataList AskPx = new TrackDataList();
             AskPx.vectorList = new List<Vector3>();
             TrackColorsList AskPxColors = new TrackColorsList();
             AskPxColors.colorList = new List<Color32>();
+            trackDataList.Add("AskPx", new TrackDataVectorList(AskPx, AskPxColors, "cAskPx", "pAskPx"));
 
             TrackDataList BidIv = new TrackDataList();
             BidIv.vectorList = new List<Vector3>();
             TrackColorsList BidIvColors = new TrackColorsList();
             BidIvColors.colorList = new List<Color32>();
+            trackDataList.Add("BidIv", new TrackDataVectorList(BidIv, BidIvColors, "cBidIv", "pBidIv"));
 
             TrackDataList MidIv = new TrackDataList();
             MidIv.vectorList = new List<Vector3>();
             TrackColorsList MidIvColors = new TrackColorsList();
             MidIvColors.colorList = new List<Color32>();
+            trackDataList.Add("MidIv", new TrackDataVectorList(MidIv, MidIvColors, "cMidIv", "pMidIv"));
 
             TrackDataList AskIv = new TrackDataList();
             AskIv.vectorList = new List<Vector3>();
             TrackColorsList AskIvColors = new TrackColorsList();
             AskIvColors.colorList = new List<Color32>();
+            trackDataList.Add("AskIv", new TrackDataVectorList(AskIv, AskIvColors, "cAskIv", "pAskIv"));
 
-            TrackDataList SmoothSmvVol = new TrackDataList();
-            SmoothSmvVol.vectorList = new List<Vector3>();
-            TrackColorsList SmoothSmvVolColors = new TrackColorsList();
-            SmoothSmvVolColors.colorList = new List<Color32>();
+            TrackDataList smoothSmvVol = new TrackDataList();
+            smoothSmvVol.vectorList = new List<Vector3>();
+            TrackColorsList smoothSmvVolColors = new TrackColorsList();
+            smoothSmvVolColors.colorList = new List<Color32>();
+            trackDataList.Add("smoothSmvVol", new TrackDataVectorList(smoothSmvVol, smoothSmvVolColors, "smoothSmvVol", "smoothSmvVol"));
 
             TrackDataList iRate = new TrackDataList();
             iRate.vectorList = new List<Vector3>();
             TrackColorsList iRateColors = new TrackColorsList();
             iRateColors.colorList = new List<Color32>();
+            trackDataList.Add("iRate", new TrackDataVectorList(iRate, iRateColors, "iRate", "iRate"));
 
             TrackDataList divRate = new TrackDataList();
             divRate.vectorList = new List<Vector3>();
             TrackColorsList divRateColors = new TrackColorsList();
             divRateColors.colorList = new List<Color32>();
+            trackDataList.Add("divRate", new TrackDataVectorList(divRate, divRateColors, "divRate", "divRate"));
 
             TrackDataList residualRateData = new TrackDataList();
             residualRateData.vectorList = new List<Vector3>();
             TrackColorsList residualRateDataColors = new TrackColorsList();
             residualRateDataColors.colorList = new List<Color32>();
+            trackDataList.Add("residualRateData", new TrackDataVectorList(residualRateData, residualRateDataColors, "residualRateData", "residualRateData"));
 
             TrackDataList extVol = new TrackDataList();
             extVol.vectorList = new List<Vector3>();
             TrackColorsList extVolColors = new TrackColorsList();
             extVolColors.colorList = new List<Color32>();
+            trackDataList.Add("extVol", new TrackDataVectorList(extVol, extVolColors, "extVol", "extVol"));
 
             TrackDataList extTheo = new TrackDataList();
             extTheo.vectorList = new List<Vector3>();
             TrackColorsList extTheoColors = new TrackColorsList();
             extTheoColors.colorList = new List<Color32>();
+            trackDataList.Add("extTheo", new TrackDataVectorList(extTheo, extTheoColors, "extCTheo", "extPTheo"));
 
             TrackDataList delta = new TrackDataList();
             delta.vectorList = new List<Vector3>();
             TrackColorsList deltaColors = new TrackColorsList();
             deltaColors.colorList = new List<Color32>();
+            trackDataList.Add("delta", new TrackDataVectorList(delta, deltaColors, "delta", "delta"));
 
             TrackDataList gamma = new TrackDataList();
             gamma.vectorList = new List<Vector3>();
             TrackColorsList gammaColors = new TrackColorsList();
             gammaColors.colorList = new List<Color32>();
+            trackDataList.Add("gamma", new TrackDataVectorList(gamma, gammaColors, "gamma", "gamma"));
 
             TrackDataList theta = new TrackDataList();
             theta.vectorList = new List<Vector3>();
             TrackColorsList thetaColors = new TrackColorsList();
             thetaColors.colorList = new List<Color32>();
+            trackDataList.Add("theta", new TrackDataVectorList(theta, thetaColors, "theta", "theta"));
 
             TrackDataList vega = new TrackDataList();
             vega.vectorList = new List<Vector3>();
             TrackColorsList vegaColors = new TrackColorsList();
             vegaColors.colorList = new List<Color32>();
+            trackDataList.Add("vega", new TrackDataVectorList(vega, vegaColors, "vega", "vega"));
 
             TrackDataList rho = new TrackDataList();
             rho.vectorList = new List<Vector3>();
             TrackColorsList rhoColors = new TrackColorsList();
             rhoColors.colorList = new List<Color32>();
+            trackDataList.Add("rho", new TrackDataVectorList(rho, rhoColors, "rho", "rho"));
 
             TrackDataList phi = new TrackDataList();
             phi.vectorList = new List<Vector3>();
             TrackColorsList phiColors = new TrackColorsList();
             phiColors.colorList = new List<Color32>();
+            trackDataList.Add("phi", new TrackDataVectorList(phi, phiColors, "phi", "phi"));
 
             TrackDataList driftlessTheta = new TrackDataList();
             driftlessTheta.vectorList = new List<Vector3>();
             TrackColorsList driftlessThetaColors = new TrackColorsList();
             driftlessThetaColors.colorList = new List<Color32>();
-           
+            trackDataList.Add("driftlessTheta", new TrackDataVectorList(driftlessTheta, driftlessThetaColors, "driftlessTheta", "driftlessTheta"));
+
+            TrackDataList inTheMoney = new TrackDataList();
+            inTheMoney.vectorList = new List<Vector3>();
+            TrackColorsList inTheMoneyColors = new TrackColorsList();
+            inTheMoneyColors.colorList = new List<Color32>();
+            trackDataList.Add("inTheMoney", new TrackDataVectorList(driftlessTheta, driftlessThetaColors, null, null));
+
+
+            float innerRadius = dataParameters.TrackRadius;
             for (int i = 0; i < optionData.Length; i++)
             {
                 DateTime expDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
@@ -155,122 +186,129 @@ namespace Optkl.Utilities
                 thetaCall -= (optionData[i][3] - strikeDiff) * trackRadials;
                 thetaPut += (optionData[i][3] - strikeDiff) * trackRadials;
                 strikeDiff = optionData[i][3];
+                foreach (string key in dataParameters.TrackOrder.Keys)
+                {
+                    if (dataParameters.TrackOrder[key].Active)
+                    {
 
-                float OiInner = GetTrackRadius("Oi", dataParameters);
-                float OiOuter = GetTrackRadius("Oi", dataParameters) + dataParameters.TrackThickness;
-                Oi.vectorList.Add(new Vector3((float)(OiInner * Math.Cos(thetaCall)), (float)(OiInner * Math.Sin(thetaCall)), 0f));
-                Oi.vectorList.Add(new Vector3((float)(OiOuter * Math.Cos(thetaCall)), (float)(OiOuter * Math.Sin(thetaCall)), 0f));
-                OiColors.colorList.Add(
-                    colorPalette.GetColorPalette(colorPalette.colorSet[ColorPalette.EnumTrack.Oi])
-                    [(int)Math.Floor(optionData[i][initialParameters.parameterPosition["cOi"].index] /
-                    (dataMax.tradeDate[dataParameters.TradeDate].maxValues["Oi"] /
-                    (colorPalette.GetColorPalette(colorPalette.colorSet[ColorPalette.EnumTrack.Oi]).Count - 0.1)))]);
-                Oi.vectorList.Add(new Vector3((float)(OiInner * Math.Cos(thetaPut)), (float)(OiInner * Math.Sin(thetaPut)), 0f));
-                Oi.vectorList.Add(new Vector3((float)(OiOuter * Math.Cos(thetaPut)), (float)(OiOuter * Math.Sin(thetaPut)), 0f));
-                OiColors.colorList.Add(
-                    colorPalette.GetColorPalette(colorPalette.colorSet[ColorPalette.EnumTrack.Oi])
-                    [(int)Math.Floor(optionData[i][initialParameters.parameterPosition["pOi"].index] /
-                    (dataMax.tradeDate[dataParameters.TradeDate].maxValues["Oi"] /
-                    (colorPalette.GetColorPalette(colorPalette.colorSet[ColorPalette.EnumTrack.Oi]).Count - 0.1)))]);
-
-                float VoluInner = GetTrackRadius("Volu", dataParameters);
-                float VoluOuter = GetTrackRadius("Volu", dataParameters) + dataParameters.TrackThickness;
-                Volu.vectorList.Add(new Vector3((float)(VoluInner * Math.Cos(thetaCall)), (float)(VoluInner * Math.Sin(thetaCall)), 0f));
-                Volu.vectorList.Add(new Vector3((float)(VoluOuter * Math.Cos(thetaCall)), (float)(VoluOuter * Math.Sin(thetaCall)), 0f));
-                VoluColors.colorList.Add(
-                    colorPalette.GetColorPalette(colorPalette.colorSet[ColorPalette.EnumTrack.Volu])
-                    [(int)Math.Floor(optionData[i][initialParameters.parameterPosition["cVolu"].index] /
-                    (dataMax.tradeDate[dataParameters.TradeDate].maxValues["Volu"] /
-                    (colorPalette.GetColorPalette(colorPalette.colorSet[ColorPalette.EnumTrack.Volu]).Count - 0.1)))]);
-                Volu.vectorList.Add(new Vector3((float)(VoluInner * Math.Cos(thetaPut)), (float)(VoluInner * Math.Sin(thetaPut)), 0f));
-                Volu.vectorList.Add(new Vector3((float)(VoluOuter * Math.Cos(thetaPut)),(float)(VoluOuter * Math.Sin(thetaPut)), 0f));
-                VoluColors.colorList.Add(
-                    colorPalette.GetColorPalette(colorPalette.colorSet[ColorPalette.EnumTrack.Volu])
-                    [(int)Math.Floor(optionData[i][initialParameters.parameterPosition["pVolu"].index] /
-                    (dataMax.tradeDate[dataParameters.TradeDate].maxValues["Volu"] /
-                    (colorPalette.GetColorPalette(colorPalette.colorSet[ColorPalette.EnumTrack.Volu]).Count - 0.1)))]);
-
-                float bidPxInner = GetTrackRadius("BidPx", dataParameters);
-                float bidPxOuter = GetTrackRadius("BidPx", dataParameters) + dataParameters.TrackThickness;
-                BidPx.vectorList.Add(new Vector3((float)(bidPxInner * Math.Cos(thetaCall)), (float)(bidPxInner * Math.Sin(thetaCall)), 0f));
-                BidPx.vectorList.Add(new Vector3((float)(bidPxOuter * Math.Cos(thetaCall)), (float)(bidPxOuter * Math.Sin(thetaCall)), 0f));
-                BidPxColors.colorList.Add(
-                    colorPalette.GetColorPalette(colorPalette.colorSet[ColorPalette.EnumTrack.BidPx])
-                    [(int)Math.Floor(optionData[i][initialParameters.parameterPosition["cBidPx"].index] /
-                    (dataMax.tradeDate[dataParameters.TradeDate].maxValues["BidPx"] /
-                    (colorPalette.GetColorPalette(colorPalette.colorSet[ColorPalette.EnumTrack.BidPx]).Count - 0.1)))]);
-                BidPx.vectorList.Add(new Vector3((float)(bidPxInner * Math.Cos(thetaPut)), (float)(bidPxInner * Math.Sin(thetaPut)), 0f));
-                BidPx.vectorList.Add(new Vector3((float)(bidPxOuter * Math.Cos(thetaPut)), (float)(bidPxOuter * Math.Sin(thetaPut)), 0f));
-                BidPxColors.colorList.Add(
-                    colorPalette.GetColorPalette(colorPalette.colorSet[ColorPalette.EnumTrack.BidPx])
-                    [(int)Math.Floor(optionData[i][initialParameters.parameterPosition["pBidPx"].index] /
-                    (dataMax.tradeDate[dataParameters.TradeDate].maxValues["BidPx"] /
-                    (colorPalette.GetColorPalette(colorPalette.colorSet[ColorPalette.EnumTrack.BidPx]).Count - 0.1)))]);
-
-                float ValueInner = GetTrackRadius("Value", dataParameters);
-                float ValueOuter = GetTrackRadius("Value", dataParameters) + dataParameters.TrackThickness;
-                Value.vectorList.Add(new Vector3((float)(ValueInner * Math.Cos(thetaCall)), (float)(ValueInner * Math.Sin(thetaCall)), 0f));
-                Value.vectorList.Add(new Vector3((float)(ValueOuter * Math.Cos(thetaCall)), (float)(ValueOuter * Math.Sin(thetaCall)), 0f));
-                ValueColors.colorList.Add(
-                    colorPalette.GetColorPalette(colorPalette.colorSet[ColorPalette.EnumTrack.Value])
-                    [(int)Math.Floor(optionData[i][initialParameters.parameterPosition["cValue"].index] /
-                    (dataMax.tradeDate[dataParameters.TradeDate].maxValues["Value"] /
-                    (colorPalette.GetColorPalette(colorPalette.colorSet[ColorPalette.EnumTrack.Value]).Count - 0.1)))]);
-                Value.vectorList.Add(new Vector3((float)(ValueInner * Math.Cos(thetaPut)), (float)(ValueInner * Math.Sin(thetaPut)), 0f));
-                Value.vectorList.Add(new Vector3((float)(ValueOuter * Math.Cos(thetaPut)), (float)(ValueOuter * Math.Sin(thetaPut)), 0f));
-                ValueColors.colorList.Add(
-                    colorPalette.GetColorPalette(colorPalette.colorSet[ColorPalette.EnumTrack.Value])
-                    [(int)Math.Floor(optionData[i][initialParameters.parameterPosition["pValue"].index] /
-                    (dataMax.tradeDate[dataParameters.TradeDate].maxValues["Value"] /
-                    (colorPalette.GetColorPalette(colorPalette.colorSet[ColorPalette.EnumTrack.Value]).Count - 0.1)))]);
-
-
-
-
-                float deltaPosition = dataParameters.GreekInnerRadius +
-                greekDistance * optionData[i][initialParameters.parameterPosition["delta"].index] /
-                dataMax.tradeDate[dataParameters.TradeDate].maxValues["delta"];
-                delta.vectorList.Add(new Vector3((float)(deltaPosition * Math.Cos(thetaCall)), (float)(deltaPosition * Math.Sin(thetaCall)), 0f));
-                Color deltaColor = colorPalette.GetGreekColor(colorPalette.greekColorSet[ColorPalette.EnumGreek.delta]);
-                deltaColor.a = dataParameters.GreekOpacity + (1 - dataParameters.GreekOpacity) * optionData[i][initialParameters.parameterPosition["delta"].index] / dataMax.tradeDate[dataParameters.TradeDate].maxValues["delta"];
-                deltaColors.colorList.Add(deltaColor);
-                delta.vectorList.Add(new Vector3((float)(deltaPosition * Math.Cos(thetaPut)), (float)(deltaPosition * Math.Sin(thetaPut)), 0f));
-                deltaColors.colorList.Add(deltaColor);
+                        float trackThickness = dataParameters.TrackThickness * dataParameters.TrackOrder[key].HeightMultiplier;
+                        trackDataList[key].TrackDataList.vectorList.Add(new Vector3((float)(innerRadius * Math.Cos(thetaCall)), (float)(innerRadius * Math.Sin(thetaCall)), 0f));
+                        trackDataList[key].TrackDataList.vectorList.Add(new Vector3((float)((innerRadius + trackThickness) * Math.Cos(thetaCall)), (float)((innerRadius + trackThickness) * Math.Sin(thetaCall)), 0f));
+                        if(key == "inTheMoney")
+                        {
+                            if (optionData[i][3] <= optionData[i][0])
+                            {
+                                trackDataList[key].TrackColorsList.colorList.Add(colorControl.trackColorSet[key].palette[0]);
+                            }
+                            else
+                            {
+                                trackDataList[key].TrackColorsList.colorList.Add(colorControl.trackColorSet[key].palette[1]);
+                            }
+                        }
+                        else
+                        {
+                            trackDataList[key].TrackColorsList.colorList.Add(colorControl.trackColorSet[key].palette[
+                                (int)Math.Floor(optionData[i][initialParameters.parameterPosition[trackDataList[key].CallName].index] /
+                                (dataMax.tradeDate[dataParameters.TradeDate].maxValues[key] /
+                                (colorControl.trackColorSet[key].palette.Count - 0.1)))]);
+                        }
+                        trackDataList[key].TrackDataList.vectorList.Add(new Vector3((float)(innerRadius * Math.Cos(thetaPut)), (float)(innerRadius * Math.Sin(thetaPut)), 0f));
+                        trackDataList[key].TrackDataList.vectorList.Add(new Vector3((float)((innerRadius + trackThickness) * Math.Cos(thetaPut)), (float)((innerRadius + trackThickness) * Math.Sin(thetaPut)), 0f));
+                        if (key == "inTheMoney")
+                        {
+                            if (optionData[i][3] <= optionData[i][0])
+                            {
+                                trackDataList[key].TrackColorsList.colorList.Add(colorControl.trackColorSet[key].palette[0]);
+                            }
+                            else
+                            {
+                                trackDataList[key].TrackColorsList.colorList.Add(colorControl.trackColorSet[key].palette[1]);
+                            }
+                        }
+                        else
+                        {
+                            trackDataList[key].TrackColorsList.colorList.Add(colorControl.trackColorSet[key].palette[
+                                (int)Math.Floor(optionData[i][initialParameters.parameterPosition[trackDataList[key].PutName].index] /
+                                (dataMax.tradeDate[dataParameters.TradeDate].maxValues[key] /
+                                (colorControl.trackColorSet[key].palette.Count - 0.1)))]);
+                        }
+                        innerRadius += dataParameters.TrackSpacer + trackThickness;
+                    }
+                }
+                innerRadius = dataParameters.TrackRadius;
+                int greekColorPalettePosition = 0;
+                float alphaMultiplier;
+                foreach (string key in dataParameters.ShowGreek.Keys)
+                {
+                    if (dataParameters.ShowGreek[key])
+                    {
+                        float greekOffset = greekRange * optionData[i][initialParameters.parameterPosition[key].index] /
+                            dataMax.tradeDate[dataParameters.TradeDate].maxValues[key];
+                        float greekPosition = dataParameters.GreekInnerRadius + greekOffset;
+                        if (key == "phi" || key == "driftlessTheta" || key == "theta")
+                        {
+                            alphaMultiplier = dataParameters.GreekOpacity - 1;
+                            if (!dataParameters.NegativeGreeks)
+                            {
+                                greekPosition = dataParameters.GreekInnerRadius - greekOffset;
+                            }
+                        }
+                        else
+                        {
+                            alphaMultiplier = 1 - dataParameters.GreekOpacity;
+                        }
+                        trackDataList[key].TrackDataList.vectorList.Add(new Vector3(
+                            (float)(greekPosition * Math.Cos(thetaCall)),
+                            (float)(greekPosition * Math.Sin(thetaCall)),
+                            0f));
+                        Color greekColor = colorControl.greekColorSet["greeks"].palette[greekColorPalettePosition];
+                        greekColor.a = dataParameters.GreekOpacity + alphaMultiplier *
+                            optionData[i][initialParameters.parameterPosition[key].index] /
+                            dataMax.tradeDate[dataParameters.TradeDate].maxValues[key];
+                        trackDataList[key].TrackColorsList.colorList.Add(greekColor);
+                        trackDataList[key].TrackDataList.vectorList.Add(new Vector3(
+                            (float)(greekPosition * Math.Cos(thetaPut)),
+                            (float)(greekPosition * Math.Sin(thetaPut)),
+                            0f));
+                        trackDataList[key].TrackColorsList.colorList.Add(greekColor);
+                    }
+                    greekColorPalettePosition++;
+                }
+                greekColorPalettePosition = 0;
             }
-            trackData.tradeDate[dataParameters.TradeDate].trackName.Add("Volu", Volu);
-            TrackColorsContainer customColors = new TrackColorsContainer();
-            customColors.trackName = new TrackColorsContainerNestedDict();
-            customColors.trackName.Add("Volu", VoluColors);
-            trackColors.tradeDate.Add(dataParameters.TradeDate, customColors);
 
-            trackData.tradeDate[dataParameters.TradeDate].trackName.Add("Oi", Oi);
-            trackColors.tradeDate[dataParameters.TradeDate].trackName.Add("Oi", OiColors);
+            Boolean firstTrack = true;
 
-            trackData.tradeDate[dataParameters.TradeDate].trackName.Add("BidPx", BidPx);
-            trackColors.tradeDate[dataParameters.TradeDate].trackName.Add("BidPx", BidPxColors);
-
-            trackData.tradeDate[dataParameters.TradeDate].trackName.Add("Value", Value);
-            trackColors.tradeDate[dataParameters.TradeDate].trackName.Add("Value", ValueColors);
-
-            trackData.tradeDate[dataParameters.TradeDate].trackName.Add("delta", delta);
-            trackColors.tradeDate[dataParameters.TradeDate].trackName.Add("delta", deltaColors);
-
-        }
-
-        private float GetTrackRadius(
-            string trackName,
-            DataParameters dataParameters
-            )
-        {
-            int trackPosition = 0;
-            foreach(string key in dataParameters.TrackOrder.Keys)
+            foreach (string key in dataParameters.TrackOrder.Keys)
             {
-                if (key != trackName && dataParameters.TrackOrder[key])
-                    trackPosition++;
-                else if (key == trackName)
-                    break;
+                if (dataParameters.TrackOrder[key].Active)
+                {
+                    if (firstTrack)
+                    {
+                        trackData.tradeDate[dataParameters.TradeDate].trackName.Add(key, trackDataList[key].TrackDataList);
+                        TrackColorsContainer customColors = new TrackColorsContainer();
+                        customColors.trackName = new TrackColorsContainerNestedDict();
+                        customColors.trackName.Add(key, trackDataList[key].TrackColorsList);
+                        trackColors.tradeDate.Add(dataParameters.TradeDate, customColors);
+                        firstTrack = false;
+                    }
+                    else
+                    {
+                        trackData.tradeDate[dataParameters.TradeDate].trackName.Add(key, trackDataList[key].TrackDataList);
+                        trackColors.tradeDate[dataParameters.TradeDate].trackName.Add(key, trackDataList[key].TrackColorsList);
+                    }
+                }
             }
-            return dataParameters.TrackRadius + trackPosition * dataParameters.TrackSpacer + trackPosition * dataParameters.TrackThickness;
+
+            foreach (string key in dataParameters.ShowGreek.Keys)
+            {
+                if (dataParameters.ShowGreek[key])
+                {
+                    trackData.tradeDate[dataParameters.TradeDate].trackName.Add(key, trackDataList[key].TrackDataList);
+                    trackColors.tradeDate[dataParameters.TradeDate].trackName.Add(key, trackDataList[key].TrackColorsList);
+                }
+            }
         }
     }
 }
+

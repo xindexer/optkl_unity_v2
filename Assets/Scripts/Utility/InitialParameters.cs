@@ -39,7 +39,7 @@ namespace Optkl.Utilities {
             { "driftlessTheta", new OptionDataParameters(30, "driftlessTheta", 20) },
             { "extVol", new OptionDataParameters(31, "extVol", 21) },
             { "extCTheo", new OptionDataParameters(32, "extTheo", 22) },
-            { "extPtheo", new OptionDataParameters(33, "exttheo", 22) },
+            { "extPTheo", new OptionDataParameters(33, "extTheo", 22) },
             { "spot_px", new OptionDataParameters(34, "spot_px", 23) },
             { "trade_date", new OptionDataParameters(35, "trade_date", 0) }
         };

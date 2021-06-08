@@ -258,7 +258,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 10000
+  orthographic size: 12000
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -305,7 +305,7 @@ MonoBehaviour:
   dataStorage: {fileID: 11400000, guid: e45dfd15bbc86471c9893546648c6eb2, type: 2}
   trackData: {fileID: 11400000, guid: e1a57e659b29e4ee18ad666c48f180b6, type: 2}
   trackColors: {fileID: 11400000, guid: 2a62b7ead8ce04d1aaab92cce61c12c5, type: 2}
-  colorPalette: {fileID: 11400000, guid: a30b4671388db4cb7addc83841da93fe, type: 2}
+  colorControl: {fileID: 11400000, guid: a30d16553265640ee87f9f548202f1a8, type: 2}
   texturesAndMaterials: {fileID: 11400000, guid: b08d38ba686014525a457c99cee2e822, type: 2}
   trackLabels: {fileID: 11400000, guid: 3dd997e72087947279a404940daa36b9, type: 2}
   dataParameters: {fileID: 11400000, guid: b9fe65cab2c88479d97a7e68a33f0b90, type: 2}

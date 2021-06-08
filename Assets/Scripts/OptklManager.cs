@@ -24,7 +24,7 @@ namespace Optkl
         private TrackColors trackColors;
 
         [SerializeField]
-        private ColorPalette colorPalette;
+        private ColorControl colorControl;
 
         [SerializeField]
         private TexturesAndMaterials texturesAndMaterials;
@@ -55,7 +55,7 @@ namespace Optkl
 
         private LoadData loadData = new LoadData();
 
-        private int blockOnValidate = 0;
+        private Boolean blockOnValidate = true;
 
         private void Awake()
         {
@@ -128,7 +128,7 @@ namespace Optkl
                 storageData.optionDataSet,
                 trackData,
                 trackColors,
-                colorPalette,
+                colorControl,
                 dataParameters,
                 dataStrike,
                 dataMax,
@@ -138,26 +138,26 @@ namespace Optkl
             drawManager.DrawOptions(
                 trackData,
                 trackColors,
-                colorPalette,
                 texturesAndMaterials,
                 dataParameters,
-                redraw);
+                redraw,
+                this);
+        }
+
+        public void ShowIRIS()
+        {
             loadingCanvas.gameObject.SetActive(false);
             runningCanvas.gameObject.SetActive(true);
+            blockOnValidate = false;
             logger.EndTimer("Draw IRIS");
         }
 
         public void RespondToEvent()
         {
-            if (blockOnValidate < 2)
+            if (!blockOnValidate)
             {
-                blockOnValidate++;
-            }
-            else
-            {
-                Debug.Log(dataParameters.ShowGreek["delta"]);
                 ClearCalculatedVariables();
-                Camera.main.backgroundColor = colorPalette.backGroundColor;
+                Camera.main.backgroundColor = colorControl.backGroundColor;
                 BuildIRIS(dataParameters.TradeDate, true);
             }
         }

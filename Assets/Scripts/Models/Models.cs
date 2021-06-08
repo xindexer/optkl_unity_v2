@@ -1,5 +1,7 @@
 ﻿using System;
 using UnityEngine;
+using Optkl.Data;
+
 
 public class JsonData
 {
@@ -59,6 +61,23 @@ public class TrackOrder
 }
 
 [Serializable]
+public class TrackControl
+{
+    [SerializeField]
+    public Boolean Active;
+
+    [SerializeField]
+    [Range(0f, 1f)]
+    public float HeightMultiplier;
+
+    public TrackControl(Boolean active, float heightMultiplier)
+    {
+        Active = active;
+        HeightMultiplier = heightMultiplier;
+    }
+}
+
+[Serializable]
 public class OptklTexturesAndMaterials
 {
     [SerializeField]
@@ -73,3 +92,20 @@ public class OptklTexturesAndMaterials
         Material = material;
     }
 }
+
+public class TrackDataVectorList
+{
+    public TrackDataList TrackDataList;
+    public TrackColorsList TrackColorsList;
+    public string CallName;
+    public string PutName;
+
+    public TrackDataVectorList(TrackDataList trackDataList, TrackColorsList trackColorsList, string callName, string putName)
+    {
+        TrackDataList = trackDataList;
+        TrackColorsList = trackColorsList;
+        CallName = callName;
+        PutName = putName;
+    }
+}
+
