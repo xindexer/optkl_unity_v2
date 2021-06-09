@@ -50,6 +50,21 @@ namespace Optkl.Data
         [SerializeField]
         public Color backGroundColor = new Color(0, 0, 0);
 
+        [SerializeField]
+        public Color TickColor = new Color(1, 1, 1);
+
+        [SerializeField]
+        public Color LabelTickColor = new Color(1, 1, 1);
+
+        [SerializeField]
+        public Color LabelColor = new Color(1, 1, 1);
+
+        [SerializeField]
+        public Color AxisColor = new Color(1, 1, 1);
+
+        [SerializeField]
+        public Color SeanCircleColor = new Color(1, 1, 1);
+
         [System.Serializable]
         public class ChooseColorStorageMainDict : SerializableDictionary<string, ColorPalette> { };
 

@@ -140,7 +140,7 @@ namespace Optkl.Data
         [SerializeField]
         [Range(3000, 10000)]
         private int greekOuterRadius = 1000;
-        public int GreetOuterRadius
+        public int GreekOuterRadius
         {
             get
             {
@@ -355,6 +355,110 @@ namespace Optkl.Data
             set
             {
                 showLabels = value;
+            }
+        }
+
+
+        [SerializeField]
+        [Range(0.5f, 10)]
+        private float axisWidth = 1f;
+        public float AxisWidth
+        {
+            get
+            {
+                return axisWidth;
+            }
+            set
+            {
+                axisWidth = value;
+            }
+        }
+
+        [SerializeField]
+        private Boolean showAxis = true;
+        public Boolean ShowAxis
+        {
+            get
+            {
+                return showAxis;
+            }
+            set
+            {
+                showAxis = value;
+            }
+        }
+
+        [SerializeField]
+        [Range(0.5f, 10)]
+        private float seanCircleWidth = 1f;
+        public float SeanCicrleWidth
+        {
+            get
+            {
+                return seanCircleWidth;
+            }
+            set
+            {
+                seanCircleWidth = value;
+            }
+        }
+
+        [SerializeField]
+        [Range(10, 1000)]
+        private float seanCircleTick = 200f;
+        public float SeanCircleTick
+        {
+            get
+            {
+                return seanCircleTick;
+            }
+            set
+            {
+                seanCircleTick = value;
+            }
+        }
+
+        [SerializeField]
+        [Range(0, 3)]
+        private float seanCircleSeparator = .7f;
+        public float SeanCircleSeparator
+        {
+            get
+            {
+                return seanCircleSeparator;
+            }
+            set
+            {
+                seanCircleSeparator = value;
+            }
+        }
+
+        [SerializeField]
+        [Range(0.5f, 100)]
+        private float seanCircleMultiplier = 30f;
+        public float SeanCircleMultiplier
+        {
+            get
+            {
+                return seanCircleMultiplier;
+            }
+            set
+            {
+                seanCircleMultiplier = value;
+            }
+        }
+
+        [SerializeField]
+        private Boolean showSeanCircle = true;
+        public Boolean ShowSeanCicrle
+        {
+            get
+            {
+                return showSeanCircle;
+            }
+            set
+            {
+                showSeanCircle = value;
             }
         }
 

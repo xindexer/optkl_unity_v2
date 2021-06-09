@@ -35,7 +35,7 @@ namespace Optkl.Utilities
                 minorTick = 2;
                 majorTick = 10;
             }
-            else if (trackCircumference > 4000 && trackCircumference <= 8000)
+            else if (trackCircumference > 4000 && trackCircumference <= 10000)
             {
                 minorTick = 10;
                 majorTick = 50;

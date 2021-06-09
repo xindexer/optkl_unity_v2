@@ -52,10 +52,18 @@ namespace Optkl
         private VectorLine vegaPoints;
         private VectorLine rhoPoints;
         private VectorLine phiPoints;
-        private VectorLine driftlessThetaPoints;
+        //private VectorLine driftlessThetaPoints;
 
         private VectorLine CallTicks;
         private VectorLine PutTicks;
+
+        private VectorLine circle;
+        private VectorLine circleHalf;
+        private VectorLine circleFull;
+        private VectorLine SeanCircle;
+        private VectorLine SeanCircle2;
+        private VectorLine SeanTicks;
+
 
         private List<GameObject> CallTickLabelContainer = new List<GameObject>();
         private List<GameObject> PutTickLabelContainer = new List<GameObject>();
@@ -64,7 +72,12 @@ namespace Optkl
 
         private GameObject GOContainer;
         private GameObject GOLabelContainer;
+        private GameObject GOLabel;
+        private GameObject GOTickLabel;
+        private GameObject GOTicksAxis;
         private GameObject GOOptklContainer;
+        private GameObject GOEnergyMap;
+        private GameObject GOGreeks;
 
         public void DrawOptions(
             TrackData trackData,
@@ -72,6 +85,7 @@ namespace Optkl
             TrackLabels trackLabels,
             TrackTickLabels trackTickLabels,
             TexturesAndMaterials texturesAndMaterials,
+            ColorControl colorControl,
             DataParameters dataParameters,
             Boolean redraw,
             OptklManager optklManager)
@@ -81,10 +95,28 @@ namespace Optkl
                 GOContainer.name = dataParameters.TradeDate;
                 GOLabelContainer = new GameObject();
                 GOLabelContainer.name = "Labels";
-                GOLabelContainer.transform.parent = GOContainer.gameObject.transform;
+                GOLabelContainer.transform.SetParent(GOContainer.gameObject.transform);
+                GOLabel = new GameObject();
+                GOLabel.name = "ExpireDateLabels";
+                GOLabel.transform.SetParent(GOLabelContainer.gameObject.transform);
+                GOTickLabel = new GameObject();
+                GOTickLabel.name = "TickLabels";
+                GOTickLabel.transform.SetParent(GOLabelContainer.gameObject.transform);
+                GOTicksAxis = new GameObject();
+                GOTicksAxis.name = "Ticks and Axis";
+                GOTicksAxis.transform.SetParent(GOLabelContainer.gameObject.transform);
+
                 GOOptklContainer = new GameObject();
                 GOOptklContainer.name = "OptklData";
-                GOOptklContainer.transform.parent = GOContainer.gameObject.transform;
+                GOOptklContainer.transform.SetParent(GOContainer.gameObject.transform);
+                GOEnergyMap = new GameObject();
+                GOEnergyMap.name = "EnergyMap";
+                GOEnergyMap.transform.SetParent(GOOptklContainer.gameObject.transform);
+                GOGreeks = new GameObject();
+                GOGreeks.name = "Greeks";
+                GOGreeks.transform.SetParent(GOOptklContainer.gameObject.transform);
+
+
                 List<Vector3> empty = new List<Vector3>();
                 yteLines = new VectorLine("yte", empty, dataParameters.TrackLineWidth);
                 OiLines = new VectorLine("Oi", empty, dataParameters.TrackLineWidth);
@@ -109,7 +141,7 @@ namespace Optkl
                 vegaPoints = new VectorLine("vega", empty, dataParameters.GreekSize, LineType.Points);
                 rhoPoints = new VectorLine("rho", empty, dataParameters.GreekSize, LineType.Points);
                 phiPoints = new VectorLine("phi", empty, dataParameters.GreekSize, LineType.Points);
-                driftlessThetaPoints = new VectorLine("driftlessTheta", empty, dataParameters.GreekSize, LineType.Points);
+                //driftlessThetaPoints = new VectorLine("driftlessTheta", empty, dataParameters.GreekSize, LineType.Points);
                 CallTicks = new VectorLine("CallTicks", empty, dataParameters.TickWidth);
                 PutTicks = new VectorLine("PutTicks", empty, dataParameters.TickWidth);
                 for (int i = 0; i < trackTickLabels.tradeDate[dataParameters.TradeDate].side["CallTickLabels"].tickLabelList.Count; i++)
@@ -118,8 +150,8 @@ namespace Optkl
                         labelPrefab.transform.gameObject,
                         trackTickLabels.tradeDate[dataParameters.TradeDate].side["CallTickLabels"].tickLabelList[i].Location,
                         trackTickLabels.tradeDate[dataParameters.TradeDate].side["CallTickLabels"].tickLabelList[i].Rotation);
-                    labelObject.name = "CallTickLabel_" + trackLabels.tradeDate[dataParameters.TradeDate].side["CallTickLabels"].labelList[i].Text;
-                    labelObject.transform.parent = GOLabelContainer.gameObject.transform;
+                    labelObject.name = "CallTickLabel_" + trackTickLabels.tradeDate[dataParameters.TradeDate].side["CallTickLabels"].tickLabelList[i].Text;
+                    labelObject.transform.SetParent(GOTickLabel.gameObject.transform);
                     TextMesh t = (TextMesh)labelObject.GetComponent(typeof(TextMesh));
                     t.text = trackTickLabels.tradeDate[dataParameters.TradeDate].side["CallTickLabels"].tickLabelList[i].Text;
                     CallTickLabelContainer.Add(labelObject);
@@ -129,8 +161,8 @@ namespace Optkl
                     GameObject labelObject = (GameObject)Instantiate(labelPrefab.transform.gameObject,
                         trackTickLabels.tradeDate[dataParameters.TradeDate].side["PutTickLabels"].tickLabelList[i].Location,
                         trackTickLabels.tradeDate[dataParameters.TradeDate].side["PutTickLabels"].tickLabelList[i].Rotation);
-                    labelObject.name = "PutTickLabel_" + trackLabels.tradeDate[dataParameters.TradeDate].side["PutTickLabels"].labelList[i].Text;
-                    labelObject.transform.parent = GOLabelContainer.gameObject.transform;
+                    labelObject.name = "PutTickLabel_" + trackTickLabels.tradeDate[dataParameters.TradeDate].side["CallTickLabels"].tickLabelList[i].Text;
+                    labelObject.transform.SetParent(GOTickLabel.gameObject.transform);
                     TextMesh t = (TextMesh)labelObject.GetComponent(typeof(TextMesh));
                     t.text = trackTickLabels.tradeDate[dataParameters.TradeDate].side["PutTickLabels"].tickLabelList[i].Text;
                     PutTickLabelContainer.Add(labelObject);
@@ -142,7 +174,7 @@ namespace Optkl
                         trackLabels.tradeDate[dataParameters.TradeDate].side["CallLabels"].labelList[i].Location,
                         trackLabels.tradeDate[dataParameters.TradeDate].side["CallLabels"].labelList[i].Rotation);
                     labelObject.name = "CallLabel_" + trackLabels.tradeDate[dataParameters.TradeDate].side["CallLabels"].labelList[i].Text;
-                    labelObject.transform.parent = GOLabelContainer.gameObject.transform;
+                    labelObject.transform.SetParent(GOLabel.gameObject.transform);
                     TextMesh t = (TextMesh)labelObject.GetComponent(typeof(TextMesh));
                     t.text = trackLabels.tradeDate[dataParameters.TradeDate].side["CallLabels"].labelList[i].Text;
                     CallLabelContainer.Add(labelObject);
@@ -154,11 +186,21 @@ namespace Optkl
                         trackLabels.tradeDate[dataParameters.TradeDate].side["PutLabels"].labelList[i].Location,
                         trackLabels.tradeDate[dataParameters.TradeDate].side["PutLabels"].labelList[i].Rotation);
                     labelObject.name = "PutLabel_" + trackLabels.tradeDate[dataParameters.TradeDate].side["PutLabels"].labelList[i].Text;
-                    labelObject.transform.parent = GOLabelContainer.gameObject.transform;
+                    labelObject.transform.SetParent(GOLabel.gameObject.transform);
                     TextMesh t = (TextMesh)labelObject.GetComponent(typeof(TextMesh));
                     t.text = trackLabels.tradeDate[dataParameters.TradeDate].side["PutLabels"].labelList[i].Text;
                     PutLabelContainer.Add(labelObject);
                 }
+
+                // axis
+
+                circle = new VectorLine("InnerAxis", new List<Vector3>(500), 1f, LineType.Continuous);
+                circleHalf = new VectorLine("MiddleAxis", new List<Vector3>(500), 1f, LineType.Continuous);
+                circleFull = new VectorLine("OuterAxis", new List<Vector3>(500), 1f, LineType.Continuous);
+
+                SeanTicks = new VectorLine("SeanTicks", empty, 1f, LineType.Discrete);
+                SeanCircle = new VectorLine("SeanCircle", new List<Vector3>(500), 1f, LineType.Discrete);
+                SeanCircle2 = new VectorLine("SeanCircle2", new List<Vector3>(500), 1f, LineType.Discrete);
             }
 
             List<VectorLine> trackList = new List<VectorLine>()
@@ -189,7 +231,7 @@ namespace Optkl
                     vegaPoints,
                     rhoPoints,
                     phiPoints,
-                    driftlessThetaPoints
+                    //driftlessThetaPoints
             };
 
             foreach (VectorLine line in trackList)
@@ -205,6 +247,7 @@ namespace Optkl
                     //if (texturesAndMaterials.OptklTextures.ContainsKey(line.name))
                     //    line.material = texturesAndMaterials.OptklTextures[line.name].Material;
                     line.Draw3D();
+                    line.rectTransform.transform.SetParent(GOEnergyMap.transform);
                 }
                 else
                 {
@@ -248,6 +291,7 @@ namespace Optkl
                     if (texturesAndMaterials.OptklTextures.ContainsKey(point.name))
                         point.material = texturesAndMaterials.OptklTextures[point.name].Material;
                     point.Draw3D();
+                    point.rectTransform.transform.SetParent(GOGreeks.transform);
                 }
                 else
                 {
@@ -259,14 +303,16 @@ namespace Optkl
             {
                 CallTicks.active = true;
                 CallTicks.points3 = trackData.tradeDate[dataParameters.TradeDate].trackName[CallTicks.name].vectorList;
-                CallTicks.SetColor(Color.white);
+                CallTicks.SetColor(colorControl.TickColor);
                 CallTicks.SetWidth(dataParameters.TickWidth, 0, CallTicks.GetSegmentNumber());
                 CallTicks.Draw3D();
+                CallTicks.rectTransform.transform.SetParent(GOTicksAxis.transform);
                 PutTicks.active = true;
                 PutTicks.points3 = trackData.tradeDate[dataParameters.TradeDate].trackName[PutTicks.name].vectorList;
-                PutTicks.SetColor(Color.white);
+                PutTicks.SetColor(colorControl.TickColor);
                 PutTicks.SetWidth(dataParameters.TickWidth, 0, PutTicks.GetSegmentNumber());
                 PutTicks.Draw3D();
+                PutTicks.rectTransform.transform.SetParent(GOTicksAxis.transform);
             }
             else
             {
@@ -279,6 +325,8 @@ namespace Optkl
                 for (int i = 0; i < CallTickLabelContainer.Count; i++)
                 {
                     CallTickLabelContainer[i].gameObject.SetActive(true);
+                    TextMesh t = (TextMesh)CallTickLabelContainer[i].GetComponent(typeof(TextMesh));
+                    t.color = colorControl.LabelTickColor;
                     CallTickLabelContainer[i].gameObject.transform.localScale = new Vector3(dataParameters.TickLabelSize, dataParameters.TickLabelSize, 0f);
                     CallTickLabelContainer[i].gameObject.transform.localPosition =
                         trackTickLabels.tradeDate[dataParameters.TradeDate].side["CallTickLabels"].tickLabelList[i].Location;
@@ -289,6 +337,8 @@ namespace Optkl
                 for (int i = 0; i < PutTickLabelContainer.Count; i++)
                 {
                     PutTickLabelContainer[i].gameObject.SetActive(true);
+                    TextMesh t = (TextMesh)PutTickLabelContainer[i].GetComponent(typeof(TextMesh));
+                    t.color = colorControl.LabelTickColor;
                     PutTickLabelContainer[i].gameObject.transform.localScale = new Vector3(dataParameters.TickLabelSize, dataParameters.TickLabelSize, 0f);
                     PutTickLabelContainer[i].gameObject.transform.localPosition =
                         trackTickLabels.tradeDate[dataParameters.TradeDate].side["PutTickLabels"].tickLabelList[i].Location;
@@ -313,6 +363,8 @@ namespace Optkl
                 for (int i = 0; i < CallLabelContainer.Count; i++)
                 {
                     CallLabelContainer[i].gameObject.SetActive(true);
+                    TextMesh t = (TextMesh)CallLabelContainer[i].GetComponent(typeof(TextMesh));
+                    t.color = colorControl.LabelColor;
                     CallLabelContainer[i].gameObject.transform.localScale = new Vector3(dataParameters.LabelSize, dataParameters.LabelSize, 0f);
                     CallLabelContainer[i].gameObject.transform.localPosition =
                         trackLabels.tradeDate[dataParameters.TradeDate].side["CallLabels"].labelList[i].Location;
@@ -323,6 +375,8 @@ namespace Optkl
                 for (int i = 0; i < PutLabelContainer.Count; i++)
                 {
                     PutLabelContainer[i].gameObject.SetActive(true);
+                    TextMesh t = (TextMesh)PutLabelContainer[i].GetComponent(typeof(TextMesh));
+                    t.color = colorControl.LabelColor;
                     PutLabelContainer[i].gameObject.transform.localScale = new Vector3(dataParameters.LabelSize, dataParameters.LabelSize, 0f);
                     PutLabelContainer[i].gameObject.transform.localPosition =
                         trackLabels.tradeDate[dataParameters.TradeDate].side["PutLabels"].labelList[i].Location;
@@ -341,6 +395,122 @@ namespace Optkl
                     PutLabelContainer[i].gameObject.SetActive(false);
                 }
             }
+
+            //axis
+
+            if (dataParameters.ShowAxis)
+            {
+                circle.active = true;
+                circle.SetColor(colorControl.AxisColor);
+                circle.SetWidth(dataParameters.AxisWidth);
+                circle.MakeCircle(Vector3.zero, dataParameters.GreekInnerRadius);
+                circle.Draw3D();
+                circle.rectTransform.transform.SetParent(GOTicksAxis.transform);
+
+                circleHalf.active = true;
+                circleHalf.SetColor(colorControl.AxisColor);
+                circleHalf.SetWidth(dataParameters.AxisWidth);
+                circleHalf.MakeCircle(Vector3.zero, dataParameters.GreekInnerRadius + (dataParameters.GreekOuterRadius - dataParameters.GreekInnerRadius) / 2);
+                circleHalf.Draw3D();
+                circleHalf.rectTransform.transform.SetParent(GOTicksAxis.transform);
+
+                circleFull.active = true;
+                circleFull.SetColor(colorControl.AxisColor);
+                circleFull.SetWidth(dataParameters.AxisWidth);
+                circleFull.MakeCircle(Vector3.zero, dataParameters.GreekOuterRadius);
+                circleFull.Draw3D();
+                circleFull.rectTransform.transform.SetParent(GOTicksAxis.transform);
+            }
+            else
+            {
+                circle.active = false;
+                circleHalf.active = false;
+                circleFull.active = false;
+            }
+
+            if (dataParameters.ShowSeanCicrle) {
+
+                Vector3 LeftHighPoint = new Vector3(
+                        (float)((dataParameters.TickRadius + (dataParameters.TickHeight * dataParameters.SeanCircleMultiplier)) * Math.Cos((-90 + dataParameters.SeanCircleSeparator) * Mathf.Deg2Rad)),
+                        (float)((dataParameters.TickRadius + (dataParameters.TickHeight * dataParameters.SeanCircleMultiplier)) * Math.Sin((-90 + dataParameters.SeanCircleSeparator) * Mathf.Deg2Rad)),
+                        0f);
+                Vector3 LeftLowPoint = new Vector3(
+                        (float)((dataParameters.TickRadius + (dataParameters.TickHeight * dataParameters.SeanCircleMultiplier) + dataParameters.SeanCircleTick) * Math.Cos((-90 + dataParameters.SeanCircleSeparator) * Mathf.Deg2Rad)),
+                        (float)((dataParameters.TickRadius + (dataParameters.TickHeight * dataParameters.SeanCircleMultiplier) + dataParameters.SeanCircleTick) * Math.Sin((-90 + dataParameters.SeanCircleSeparator) * Mathf.Deg2Rad)),
+                        0f);
+                Vector3 RightHighPoint = new Vector3(
+                        (float)((dataParameters.TickRadius + (dataParameters.TickHeight * dataParameters.SeanCircleMultiplier)) * Math.Cos((90 - dataParameters.SeanCircleSeparator) * Mathf.Deg2Rad)),
+                        (float)((dataParameters.TickRadius + (dataParameters.TickHeight * dataParameters.SeanCircleMultiplier)) * Math.Sin((90 - dataParameters.SeanCircleSeparator) * Mathf.Deg2Rad)),
+                        0f);
+                Vector3 RightLowPoint = new Vector3(
+                        (float)((dataParameters.TickRadius + (dataParameters.TickHeight * dataParameters.SeanCircleMultiplier) + dataParameters.SeanCircleTick) * Math.Cos((90 - dataParameters.SeanCircleSeparator) * Mathf.Deg2Rad)),
+                        (float)((dataParameters.TickRadius + (dataParameters.TickHeight * dataParameters.SeanCircleMultiplier) + dataParameters.SeanCircleTick) * Math.Sin((90 - dataParameters.SeanCircleSeparator) * Mathf.Deg2Rad)),
+                        0f);
+                Vector3 LeftHighPoint2 = new Vector3(
+                       (float)((dataParameters.TickRadius + (dataParameters.TickHeight * dataParameters.SeanCircleMultiplier)) * Math.Cos((-90 - dataParameters.SeanCircleSeparator) * Mathf.Deg2Rad)),
+                       (float)((dataParameters.TickRadius + (dataParameters.TickHeight * dataParameters.SeanCircleMultiplier)) * Math.Sin((-90 - dataParameters.SeanCircleSeparator) * Mathf.Deg2Rad)),
+                       0f);
+                Vector3 LeftLowPoint2 = new Vector3(
+                        (float)((dataParameters.TickRadius + (dataParameters.TickHeight * dataParameters.SeanCircleMultiplier) + dataParameters.SeanCircleTick) * Math.Cos((-90 - dataParameters.SeanCircleSeparator) * Mathf.Deg2Rad)),
+                        (float)((dataParameters.TickRadius + (dataParameters.TickHeight * dataParameters.SeanCircleMultiplier) + dataParameters.SeanCircleTick) * Math.Sin((-90 - dataParameters.SeanCircleSeparator) * Mathf.Deg2Rad)),
+                        0f);
+                Vector3 RightHighPoint2 = new Vector3(
+                        (float)((dataParameters.TickRadius + (dataParameters.TickHeight * dataParameters.SeanCircleMultiplier)) * Math.Cos((90 + dataParameters.SeanCircleSeparator) * Mathf.Deg2Rad)),
+                        (float)((dataParameters.TickRadius + (dataParameters.TickHeight * dataParameters.SeanCircleMultiplier)) * Math.Sin((90 + dataParameters.SeanCircleSeparator) * Mathf.Deg2Rad)),
+                        0f);
+                Vector3 RightLowPoint2 = new Vector3(
+                        (float)((dataParameters.TickRadius + (dataParameters.TickHeight * dataParameters.SeanCircleMultiplier) + dataParameters.SeanCircleTick) * Math.Cos((90 + dataParameters.SeanCircleSeparator) * Mathf.Deg2Rad)),
+                        (float)((dataParameters.TickRadius + (dataParameters.TickHeight * dataParameters.SeanCircleMultiplier) + dataParameters.SeanCircleTick) * Math.Sin((90 + dataParameters.SeanCircleSeparator) * Mathf.Deg2Rad)),
+                        0f);
+                List<Vector3> SeanTickList = new List<Vector3>()
+                {
+                    { LeftHighPoint },
+                    { LeftLowPoint },
+                    { RightHighPoint },
+                    { RightLowPoint },
+                    { LeftHighPoint2 },
+                    { LeftLowPoint2 },
+                    { RightHighPoint2 },
+                    { RightLowPoint2 }
+                };
+                SeanTicks.active = true;
+                SeanTicks.points3 = SeanTickList;
+                SeanTicks.SetWidth(dataParameters.SeanCicrleWidth);
+                SeanTicks.SetColor(colorControl.SeanCircleColor);
+                SeanTicks.Draw3D();
+                SeanTicks.rectTransform.transform.SetParent(GOTicksAxis.transform);
+
+                SeanCircle.active = true;
+                SeanCircle.SetWidth(dataParameters.SeanCicrleWidth);
+                SeanCircle.SetColor(colorControl.SeanCircleColor);
+                SeanCircle.MakeArc(
+                    Vector3.zero,
+                    dataParameters.TickRadius + (dataParameters.TickHeight * dataParameters.SeanCircleMultiplier) + dataParameters.SeanCircleTick,
+                    dataParameters.TickRadius + (dataParameters.TickHeight * dataParameters.SeanCircleMultiplier) + dataParameters.SeanCircleTick,
+                    dataParameters.SeanCircleSeparator, 180 - dataParameters.SeanCircleSeparator);
+                SeanCircle.Draw3D();
+                SeanCircle.rectTransform.transform.SetParent(GOTicksAxis.transform);
+
+                SeanCircle2.active = true;
+                SeanCircle2.SetWidth(dataParameters.SeanCicrleWidth);
+                SeanCircle2.SetColor(colorControl.SeanCircleColor);
+                SeanCircle2.MakeArc(
+                    Vector3.zero,
+                    dataParameters.TickRadius + (dataParameters.TickHeight * dataParameters.SeanCircleMultiplier) + dataParameters.SeanCircleTick,
+                    dataParameters.TickRadius + (dataParameters.TickHeight * dataParameters.SeanCircleMultiplier) + dataParameters.SeanCircleTick,
+                    180 + dataParameters.SeanCircleSeparator, 360 - dataParameters.SeanCircleSeparator);
+                SeanCircle2.Draw3D();
+                SeanCircle2.rectTransform.transform.SetParent(GOTicksAxis.transform);
+
+
+            }
+            else
+            {
+                SeanCircle.active = false;
+                SeanCircle2.active = false;
+                SeanTicks.active = false;
+            }
+
             optklManager.ShowIRIS();
         }
     }

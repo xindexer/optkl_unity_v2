@@ -28,7 +28,7 @@ namespace Optkl.Utilities
             DateTime pvDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
             string previousDateTime = pvDateTime.AddMilliseconds(optionData[0][1] * 1000 + 4.32e+7).ToString("yyyyMMMdd");
             float strikeDiff = dataStrike.tradeDate[dataParameters.TradeDate].expireDate[previousDateTime].strikeMin;
-            float greekRange = dataParameters.GreetOuterRadius - dataParameters.GreekInnerRadius;
+            float greekRange = dataParameters.GreekOuterRadius - dataParameters.GreekInnerRadius;
             InitialParameters initialParameters = new InitialParameters();
             Dictionary<string, TrackDataVectorList> trackDataList = new Dictionary<string, TrackDataVectorList>();
 
@@ -250,7 +250,7 @@ namespace Optkl.Utilities
                             alphaMultiplier = dataParameters.GreekOpacity - 1;
                             if (dataParameters.NegativeGreeks)
                             {
-                                greekPosition = dataParameters.GreetOuterRadius + greekOffset;
+                                greekPosition = dataParameters.GreekOuterRadius + greekOffset;
                             }
                             else
                             {

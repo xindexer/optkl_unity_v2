@@ -17,7 +17,7 @@ MonoBehaviour:
   trackRadius: 8000
   trackSpacer: 250
   pieSpacer: 0.66
-  powerWedge: 2.1
+  powerWedge: 12.7
   trackThickness: 336
   trackLineWidth: 1
   greekInnerRadius: 3664
@@ -36,6 +36,12 @@ MonoBehaviour:
   labelSize: 11.9
   labelDistanceMultiplier: 26
   showLabels: 1
+  axisWidth: 1
+  showAxis: 1
+  seanCircleWidth: 1
+  seanCircleTick: 200
+  seanCircleMultiplier: 6.59
+  showSeanCircle: 1
   TrackOrder:
     m_val: 7
     m_keys:

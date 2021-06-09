@@ -147,6 +147,7 @@ namespace Optkl
                 trackLabels,
                 trackTickLabels,
                 texturesAndMaterials,
+                colorControl,
                 dataParameters,
                 redraw,
                 this);
