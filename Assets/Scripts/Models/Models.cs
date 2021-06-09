@@ -30,14 +30,13 @@ public class OptionDataParameters
 
 public class Label
 {
-    public string LabelType;
     public string Text;
     public Vector3 Location;
     public Quaternion Rotation;
+    public GameObject LabelGameObject;
 
-    public Label(string labelType, string text, Vector3 location, Quaternion rotation)
+    public Label(string text, Vector3 location, Quaternion rotation)
     {
-        LabelType = labelType;
         Text = text;
         Location = location;
         Rotation = rotation;

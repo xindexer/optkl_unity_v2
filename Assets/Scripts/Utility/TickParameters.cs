@@ -16,7 +16,8 @@ namespace Optkl.Utilities
             DataStrike dataStrike,
             DataMax dataMax,
             Settings settings,
-            TrackLabels trackLabels)
+            TrackLabels trackLabels,
+            TrackTickLabels trackTickLabels)
         {
             float trackCircumference = settings.tradeDate[dataParameters.TradeDate].settings["TrackCircumference"];
             float trackRadials = 2 * (float)Math.PI / trackCircumference;
@@ -27,6 +28,8 @@ namespace Optkl.Utilities
             int majorTick;
             LabelList labelsContainer = new LabelList();
             labelsContainer.labelList = new List<Label>();
+            TickLabelList tickLabelContainer = new TickLabelList();
+            tickLabelContainer.tickLabelList = new List<Label>();
             if (trackCircumference <= 4000)
             {
                 minorTick = 2;
@@ -67,9 +70,11 @@ namespace Optkl.Utilities
                 else
                     rotate = Quaternion.Euler(0, 0, (float)(labelTheta * Mathf.Rad2Deg) + 180);
                 Label expiredDateLabel = new Label(
-                    "expire",
                     (string)expiredObject,
-                    new Vector3((float)(labelCircumference * Math.Cos(labelTheta)), (float)(labelCircumference * Math.Sin(labelTheta)), 0f),
+                    new Vector3(
+                        (float)((dataParameters.TickRadius + (dataParameters.TickHeight * dataParameters.LabelDistanceMultiplier)) * Math.Cos(labelTheta)),
+                        (float)((dataParameters.TickRadius + (dataParameters.TickHeight * dataParameters.LabelDistanceMultiplier)) * Math.Sin(labelTheta)),
+                        0f),
                     rotate
                 );
                 labelsContainer.labelList.Add(expiredDateLabel);
@@ -83,7 +88,7 @@ namespace Optkl.Utilities
                     minorTick,
                     majorTick,
                     dataParameters,
-                    labelsContainer,
+                    tickLabelContainer,
                     newData
                 );
                 int nextTick = (int)minStrike;
@@ -101,13 +106,13 @@ namespace Optkl.Utilities
                         0f
                     );
                     addTick(call,
-                        (int)minStrike,
+                        nextTick,
                         theta,
                         tickStart,
                         minorTick,
                         majorTick,
                         dataParameters,
-                        labelsContainer,
+                        tickLabelContainer,
                         newData
                     );
                 }
@@ -134,13 +139,13 @@ namespace Optkl.Utilities
                             0f
                         );
                         addTick(call,
-                            (int)minStrike,
+                            nextTick,
                             theta,
                             tickStart,
                             minorTick,
                             majorTick,
                             dataParameters,
-                            labelsContainer,
+                            tickLabelContainer,
                             newData
                         );
                     }
@@ -159,11 +164,16 @@ namespace Optkl.Utilities
                 customLabel.side = new TrackLabelsNestedDict();
                 customLabel.side.Add("CallLabels", labelsContainer);
                 trackLabels.tradeDate.Add(dataParameters.TradeDate, customLabel);
+                TrackTickLabel customTickLabel = new TrackTickLabel();
+                customTickLabel.side = new TrackTickLabelsNestedDict();
+                customTickLabel.side.Add("CallTickLabels", tickLabelContainer);
+                trackTickLabels.tradeDate.Add(dataParameters.TradeDate, customTickLabel);
             }
             else
             {
                 trackData.tradeDate[dataParameters.TradeDate].trackName.Add("PutTicks", newData);
                 trackLabels.tradeDate[dataParameters.TradeDate].side.Add("PutLabels", labelsContainer);
+                trackTickLabels.tradeDate[dataParameters.TradeDate].side.Add("PutTickLabels", tickLabelContainer);
             }
         }
 
@@ -175,15 +185,15 @@ namespace Optkl.Utilities
             int minorTick,
             int majorTick,
             DataParameters dataParameters,
-            LabelList labelsContainer,
+            TickLabelList tickLabelContainer,
             TrackDataList newData)
         {
             Vector3 tick = Vector3.zero;
             if (labelCheck % majorTick == 0)
             {
                 tick = new Vector3(
-                    (float)((dataParameters.TickRadius + (dataParameters.TickHeight * 2)) * Math.Cos(theta)),
-                    (float)((dataParameters.TickRadius + (dataParameters.TickHeight * 2)) * Math.Sin(theta)),
+                    (float)((dataParameters.TickRadius + (dataParameters.TickHeight * dataParameters.MajorTickMultiplier)) * Math.Cos(theta)),
+                    (float)((dataParameters.TickRadius + (dataParameters.TickHeight * dataParameters.MajorTickMultiplier)) * Math.Sin(theta)),
                     0f
                 );
                 Quaternion rotate;
@@ -193,16 +203,16 @@ namespace Optkl.Utilities
                 else
                     rotate = Quaternion.Euler(0, 0, (float)(theta * Mathf.Rad2Deg) + 180);
                 tickLabel = new Label(
-                    "tick",
                     labelCheck.ToString(),
                     new Vector3(
-                        (float)((dataParameters.TickRadius + (dataParameters.TickHeight * 5)) * Math.Cos(theta)),
-                        (float)((dataParameters.TickRadius + (dataParameters.TickHeight * 5)) * Math.Sin(theta)),
+                        (float)((dataParameters.TickRadius + (dataParameters.TickHeight * dataParameters.TickLabelDistanceMultiplier)) * Math.Cos(theta)),
+                        (float)((dataParameters.TickRadius + (dataParameters.TickHeight * dataParameters.TickLabelDistanceMultiplier)) * Math.Sin(theta)),
                         0f
                     ),
                     rotate
                 );
-                labelsContainer.labelList.Add(tickLabel);
+                
+                tickLabelContainer.tickLabelList.Add(tickLabel);
                 newData.vectorList.Add(arc);
                 newData.vectorList.Add(tick);
             }

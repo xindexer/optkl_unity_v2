@@ -197,7 +197,7 @@ namespace Optkl.Data
         }
 
         [SerializeField]
-        [Range(6000, 14000)]
+        [Range(6000, 20000)]
         private int tickRadius = 10000;
         public int TickRadius
         {
@@ -223,6 +223,21 @@ namespace Optkl.Data
             set
             {
                 tickHeight = value;
+            }
+        }
+
+        [SerializeField]
+        [Range(1, 5)]
+        private int majorTickMultiplier = 1;
+        public int MajorTickMultiplier
+        {
+            get
+            {
+                return majorTickMultiplier;
+            }
+            set
+            {
+                majorTickMultiplier = value;
             }
         }
 
@@ -256,6 +271,36 @@ namespace Optkl.Data
         }
 
         [SerializeField]
+        [Range(5, 20)]
+        private float tickLabelSize = 5f;
+        public float TickLabelSize
+        {
+            get
+            {
+                return tickLabelSize;
+            }
+            set
+            {
+                tickLabelSize = value;
+            }
+        }
+
+        [SerializeField]
+        [Range(1, 20)]
+        private float tickLabelDistanceMultiplier = 5f;
+        public float TickLabelDistanceMultiplier
+        {
+            get
+            {
+                return tickLabelDistanceMultiplier;
+            }
+            set
+            {
+                tickLabelDistanceMultiplier = value;
+            }
+        }
+
+        [SerializeField]
         private Boolean showTickLabels = true;
         public Boolean ShowTickLabels
         {
@@ -270,38 +315,8 @@ namespace Optkl.Data
         }
 
         [SerializeField]
-        [Range(0, 10)]
-        private float tickLabelSize = 1f;
-        public float TickLabelSize
-        {
-            get
-            {
-                return tickLabelSize;
-            }
-            set
-            {
-                tickLabelSize = value;
-            }
-        }
-
-        [SerializeField]
-        [Range(10000, 16000)]
-        private int labelRadius = 11000;
-        public int LabelRadius
-        {
-            get
-            {
-                return labelRadius;
-            }
-            set
-            {
-                labelRadius = value;
-            }
-        }
-
-        [SerializeField]
-        [Range(0, 10)]
-        private float labelSize = 1f;
+        [Range(10, 40)]
+        private float labelSize = 10f;
         public float LabelSize
         {
             get
@@ -311,6 +326,21 @@ namespace Optkl.Data
             set
             {
                 labelSize = value;
+            }
+        }
+
+        [SerializeField]
+        [Range(10, 40)]
+        private float labelDistanceMultiplier = 5f;
+        public float LabelDistanceMultiplier
+        {
+            get
+            {
+                return labelDistanceMultiplier;
+            }
+            set
+            {
+                labelDistanceMultiplier = value;
             }
         }
 

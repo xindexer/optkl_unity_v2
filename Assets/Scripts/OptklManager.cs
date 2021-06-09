@@ -33,6 +33,9 @@ namespace Optkl
         private TrackLabels trackLabels;
 
         [SerializeField]
+        private TrackTickLabels trackTickLabels;
+
+        [SerializeField]
         private DataParameters dataParameters;
 
         [SerializeField]
@@ -69,6 +72,7 @@ namespace Optkl
             trackData.tradeDate.Clear();
             trackColors.tradeDate.Clear();
             trackLabels.tradeDate.Clear();
+            trackTickLabels.tradeDate.Clear();
             dataStrike.tradeDate.Clear();
             dataMax.tradeDate.Clear();
             settings.tradeDate.Clear();
@@ -111,7 +115,8 @@ namespace Optkl
                 dataStrike,
                 dataMax,
                 settings,
-                trackLabels);
+                trackLabels,
+                trackTickLabels);
             tickParameters.BuildTicks(
                 false,
                 storageData.optionDataSet,
@@ -120,7 +125,8 @@ namespace Optkl
                 dataStrike,
                 dataMax,
                 settings,
-                trackLabels);
+                trackLabels,
+                trackTickLabels);
             //logger.EndTimer("Build Ticks");
             //logger.StartTimer();
             TrackParameters trackParameters = new TrackParameters();
@@ -138,6 +144,8 @@ namespace Optkl
             drawManager.DrawOptions(
                 trackData,
                 trackColors,
+                trackLabels,
+                trackTickLabels,
                 texturesAndMaterials,
                 dataParameters,
                 redraw,

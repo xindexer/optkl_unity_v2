@@ -308,6 +308,7 @@ MonoBehaviour:
   colorControl: {fileID: 11400000, guid: a30d16553265640ee87f9f548202f1a8, type: 2}
   texturesAndMaterials: {fileID: 11400000, guid: b08d38ba686014525a457c99cee2e822, type: 2}
   trackLabels: {fileID: 11400000, guid: 3dd997e72087947279a404940daa36b9, type: 2}
+  trackTickLabels: {fileID: 11400000, guid: edba11729eaaf4e8ead1cd265a49a084, type: 2}
   dataParameters: {fileID: 11400000, guid: b9fe65cab2c88479d97a7e68a33f0b90, type: 2}
   dataMax: {fileID: 11400000, guid: 96a6f16cee658437f8dcc9fee6cd80cf, type: 2}
   settings: {fileID: 11400000, guid: 1a06fcb855f7b4943a74ffb302926261, type: 2}
@@ -327,6 +328,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 216310a430ac64e54850760c9474a1fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  labelPrefab: {fileID: 8266459756306327391, guid: 7d87d43f2558f46408f949d396ed2120, type: 3}
+  deltaPrefab: {fileID: 8734094863921324451, guid: 585df0c73dbf342ea8ab216778f22bc1, type: 3}
+  gammaPrefab: {fileID: 5968153983904703999, guid: ee6847ad9f8e44b01a113c200035a832, type: 3}
+  thetaPrefab: {fileID: 4539132081251996752, guid: d17874af16b0f4e87a79f12787547bf1, type: 3}
+  vegaPrefab: {fileID: 3158960862071470960, guid: 221bdc3bc92aa41af9c3f972076be17e, type: 3}
+  rhoPrefab: {fileID: 6001737683274424247, guid: 1ab4726fab12a450f91260e0be0f8db6, type: 3}
+  phiPrefab: {fileID: 2394560607785911945, guid: 4bf41c47e46fe4b00b60d5c974ef2e36, type: 3}
 --- !u!114 &339478548
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -248,9 +248,13 @@ namespace Optkl.Utilities
                         if (key == "phi" || key == "driftlessTheta" || key == "theta")
                         {
                             alphaMultiplier = dataParameters.GreekOpacity - 1;
-                            if (!dataParameters.NegativeGreeks)
+                            if (dataParameters.NegativeGreeks)
                             {
-                                greekPosition = dataParameters.GreekInnerRadius - greekOffset;
+                                greekPosition = dataParameters.GreetOuterRadius + greekOffset;
+                            }
+                            else
+                            {
+                                greekPosition = dataParameters.GreekInnerRadius + greekOffset;
                             }
                         }
                         else
