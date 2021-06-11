@@ -3,6 +3,7 @@ using Optkl.Utilities;
 using Optkl.Data;
 using Optkl.Load;
 using System;
+using System.Collections.Generic;
 
 namespace Optkl
 {
@@ -50,19 +51,18 @@ namespace Optkl
         
         private LoadData loadData = new LoadData();
 
-        private float blockTimer;
+        private int blockCounter = 0;
         
         private void Awake()
         {
-            ClearCalculatedVariables();
             dataStorage.tradeDate.Clear();
+            ClearCalculatedVariables();
             InputOptionData data = new InputOptionData();
             data.Symbol = "AAPL";
             data.TradeDate = Convert.ToDateTime("Jun 7, 2021");
             data.Lookback = 50;
             InitialLoad(data);
         }
-
         private void ClearCalculatedVariables()
         {
             trackData.tradeDate.Clear();
@@ -96,15 +96,17 @@ namespace Optkl
             if (!redraw)
             {
                 logger.EndTimer("Load Data");
-                blockTimer = Time.realtimeSinceStartup;
                 dataParameters.TradeSymbol = symbol;
             }
-            StoragelData storageData = dataStorage.tradeDate[dataParameters.TradeName];
+            StorageData storageData = dataStorage.tradeDate[dataParameters.TradeName];
             logger.StartTimer();
             LabelParameters labelParameters = new LabelParameters();
-            labelParameters.BuildLabels(storageData.optionDataSet, dataParameters, dataStrike, dataMax, settings);
-            //logger.EndTimer("Build Labels");
-            //logger.StartTimer();
+            labelParameters.BuildLabels(
+                storageData.optionDataSet, 
+                dataParameters, 
+                dataStrike, 
+                dataMax, 
+                settings);
             TickParameters tickParameters = new TickParameters();
             tickParameters.BuildTicks(
                 true,
@@ -125,9 +127,8 @@ namespace Optkl
                 dataMax,
                 settings,
                 trackLabels,
-                trackTickLabels);
-            //logger.EndTimer("Build Ticks");
-            //logger.StartTimer();
+                trackTickLabels
+            );
             TrackParameters trackParameters = new TrackParameters();
             trackParameters.BuildTracks(
                 storageData.optionDataSet,
@@ -138,8 +139,6 @@ namespace Optkl
                 dataStrike,
                 dataMax,
                 settings);
-            //logger.EndTimer("Build Tracks");
-            //logger.StartTimer();
             drawManager.DrawOptions(
                 trackData,
                 trackColors,
@@ -154,18 +153,22 @@ namespace Optkl
 
         public void ShowIRIS()
         {
-            // ClearCalculatedVariables();            
+            ClearCalculatedVariables();
             logger.EndTimer("Draw IRIS");
         }
 
         public void RespondToEvent()
         {
-            // if (Time.realtimeSinceStartup - blockTimer > 2)
-            // {
-            //     ClearCalculatedVariables();
-            //     Camera.main.backgroundColor = colorControl.backGroundColor;
-            //     BuildIRIS(true);
-            // }
+            if (blockCounter < 5)
+            {
+                blockCounter++;
+            }
+            else 
+            {
+                ClearCalculatedVariables();
+                Camera.main.backgroundColor = colorControl.backGroundColor;
+                BuildIRIS(true);
+            }
         }
     }
 }

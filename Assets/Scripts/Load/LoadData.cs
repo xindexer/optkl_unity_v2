@@ -41,7 +41,7 @@ namespace Optkl.Data {
                 }
                 else
                 {
-                    StoragelData customStorage = new StoragelData();
+                    StorageData customStorage = new StorageData();
                     customStorage.optionDataSet = jsnArray.symbolData;
                     dataStorage.tradeDate.Add(data.Symbol + "-" + data.FormatTradeDate, customStorage);
 

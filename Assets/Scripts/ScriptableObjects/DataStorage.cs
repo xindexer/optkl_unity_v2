@@ -11,11 +11,11 @@ namespace Optkl.Data
         public DataStorageMainDict tradeDate;
     }
 
-    public class StoragelData
+    public class StorageData
     {
         public float[][] optionDataSet;
     }
 
     [System.Serializable]
-    public class DataStorageMainDict : SerializableDictionary<string, StoragelData> { }
+    public class DataStorageMainDict : SerializableDictionary<string, StorageData> { }
 }
