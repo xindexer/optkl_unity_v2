@@ -19,9 +19,9 @@ namespace Optkl.Utilities
             TrackLabels trackLabels,
             TrackTickLabels trackTickLabels)
         {
-            float trackCircumference = settings.tradeDate[dataParameters.TradeDate].settings["TrackCircumference"];
+            float trackCircumference = settings.tradeDate[dataParameters.TradeName].settings["TrackCircumference"];
             float trackRadials = 2 * (float)Math.PI / trackCircumference;
-            float pieSpace = settings.tradeDate[dataParameters.TradeDate].settings["PieSpace"];
+            float pieSpace = settings.tradeDate[dataParameters.TradeName].settings["PieSpace"];
             Vector3 tickStart;
             float deltaTheta;
             int minorTick;
@@ -30,6 +30,11 @@ namespace Optkl.Utilities
             labelsContainer.labelList = new List<Label>();
             TickLabelList tickLabelContainer = new TickLabelList();
             tickLabelContainer.tickLabelList = new List<Label>();
+            if (trackCircumference <= 500)
+            {
+                minorTick = 1;
+                majorTick = 5;
+            }
             if (trackCircumference <= 4000)
             {
                 minorTick = 2;
@@ -50,13 +55,13 @@ namespace Optkl.Utilities
             else
                 deltaTheta = pieSpace / 2 * trackRadials;
             float theta = (float)Math.PI / 2 + deltaTheta;
-            ICollection<string> expiredDates = dataStrike.tradeDate[dataParameters.TradeDate].expireDate.Keys;
+            ICollection<string> expiredDates = dataStrike.tradeDate[dataParameters.TradeName].expireDate.Keys;
             TrackDataList newData = new TrackDataList();
             newData.vectorList = new List<Vector3>();
             foreach (object expiredObject in expiredDates) 
             {
-                float minStrike = dataStrike.tradeDate[dataParameters.TradeDate].expireDate[(string)expiredObject].strikeMin;
-                float maxStrike = dataStrike.tradeDate[dataParameters.TradeDate].expireDate[(string)expiredObject].strikeMax;
+                float minStrike = dataStrike.tradeDate[dataParameters.TradeName].expireDate[(string)expiredObject].strikeMin;
+                float maxStrike = dataStrike.tradeDate[dataParameters.TradeName].expireDate[(string)expiredObject].strikeMax;
                 float labelCircumference = (maxStrike - minStrike) / 2;
                 float deltaLabelTheta;
                 if (call)
@@ -81,25 +86,28 @@ namespace Optkl.Utilities
 
                 
                 tickStart = new Vector3((float)(dataParameters.TickRadius * Math.Cos(theta)), (float)(dataParameters.TickRadius * Math.Sin(theta)), 0f);
+                int nextTick = (int)minStrike;
+                if (nextTick == 0)
+                    nextTick++;
                 addTick(call,
-                    (int)minStrike,
+                    nextTick,
                     theta,
                     tickStart,
                     minorTick,
                     majorTick,
                     dataParameters,
                     tickLabelContainer,
-                    newData
+                    newData,
+                    true
                 );
-                int nextTick = (int)minStrike;
-                while (nextTick % minorTick != 0)
+                while (nextTick % minorTick != 0 && nextTick < maxStrike)
                     nextTick++;
                 if ((nextTick - minStrike) != 0)
                 {
                     if (call)
-                        theta -= (nextTick - minStrike) * trackRadials; 
+                        theta -= ((float)nextTick - minStrike) * trackRadials; 
                     else
-                        theta += (nextTick - minStrike) * trackRadials;
+                        theta += ((float)nextTick - minStrike) * trackRadials;
                     tickStart = new Vector3(
                         (float)(dataParameters.TickRadius * Math.Cos(theta)),
                         (float)(dataParameters.TickRadius * Math.Sin(theta)),
@@ -113,7 +121,8 @@ namespace Optkl.Utilities
                         majorTick,
                         dataParameters,
                         tickLabelContainer,
-                        newData
+                        newData,
+                        false
                     );
                 }
                 while (nextTick < maxStrike)
@@ -121,11 +130,27 @@ namespace Optkl.Utilities
                     nextTick += minorTick;
                     if (nextTick > maxStrike)
                     {
-                        float endArc = nextTick - maxStrike;
+                        float endArc = maxStrike - (float)nextTick + (float)minorTick;
                         if (call)
                             theta -= endArc * trackRadials;
                         else
                             theta += endArc * trackRadials;
+                        tickStart = new Vector3(
+                            (float)(dataParameters.TickRadius * Math.Cos(theta)),
+                            (float)(dataParameters.TickRadius * Math.Sin(theta)),
+                            0f
+                        );
+                        addTick(call,
+                            (int)maxStrike,
+                            theta,
+                            tickStart,
+                            minorTick,
+                            majorTick,
+                            dataParameters,
+                            tickLabelContainer,
+                            newData,
+                            true
+                        );
                     }
                     else
                     {
@@ -146,9 +171,30 @@ namespace Optkl.Utilities
                             majorTick,
                             dataParameters,
                             tickLabelContainer,
-                            newData
+                            newData,
+                            false
                         );
                     }
+                }
+                
+                if (nextTick == maxStrike)
+                {
+                    float endArc = (float)nextTick - maxStrike;
+                    if (call)
+                        theta -= endArc * trackRadials;
+                    else
+                        theta += endArc * trackRadials;
+                    addTick(call,
+                        nextTick,
+                        theta,
+                        tickStart,
+                        minorTick,
+                        majorTick,
+                        dataParameters,
+                        tickLabelContainer,
+                        newData,
+                        true
+                    );
                 }
                 if (call)
                     theta -= pieSpace * trackRadials;
@@ -159,21 +205,21 @@ namespace Optkl.Utilities
                 TrackDataContainer customTrack = new TrackDataContainer();
                 customTrack.trackName = new TrackDataContainerNestedDict();
                 customTrack.trackName.Add("CallTicks", newData);
-                trackData.tradeDate.Add(dataParameters.TradeDate, customTrack);
+                trackData.tradeDate.Add(dataParameters.TradeName, customTrack);
                 TrackLabel customLabel = new TrackLabel();
                 customLabel.side = new TrackLabelsNestedDict();
                 customLabel.side.Add("CallLabels", labelsContainer);
-                trackLabels.tradeDate.Add(dataParameters.TradeDate, customLabel);
+                trackLabels.tradeDate.Add(dataParameters.TradeName, customLabel);
                 TrackTickLabel customTickLabel = new TrackTickLabel();
                 customTickLabel.side = new TrackTickLabelsNestedDict();
                 customTickLabel.side.Add("CallTickLabels", tickLabelContainer);
-                trackTickLabels.tradeDate.Add(dataParameters.TradeDate, customTickLabel);
+                trackTickLabels.tradeDate.Add(dataParameters.TradeName, customTickLabel);
             }
             else
             {
-                trackData.tradeDate[dataParameters.TradeDate].trackName.Add("PutTicks", newData);
-                trackLabels.tradeDate[dataParameters.TradeDate].side.Add("PutLabels", labelsContainer);
-                trackTickLabels.tradeDate[dataParameters.TradeDate].side.Add("PutTickLabels", tickLabelContainer);
+                trackData.tradeDate[dataParameters.TradeName].trackName.Add("PutTicks", newData);
+                trackLabels.tradeDate[dataParameters.TradeName].side.Add("PutLabels", labelsContainer);
+                trackTickLabels.tradeDate[dataParameters.TradeName].side.Add("PutTickLabels", tickLabelContainer);
             }
         }
 
@@ -186,7 +232,8 @@ namespace Optkl.Utilities
             int majorTick,
             DataParameters dataParameters,
             TickLabelList tickLabelContainer,
-            TrackDataList newData)
+            TrackDataList newData,
+            Boolean drawFirstLast)
         {
             Vector3 tick = Vector3.zero;
             if (labelCheck % majorTick == 0)
@@ -225,7 +272,17 @@ namespace Optkl.Utilities
                 );
                 newData.vectorList.Add(arc);
                 newData.vectorList.Add(tick);
-            }            
+            } 
+            else if (drawFirstLast)
+            {
+                tick = new Vector3(
+                    (float)((dataParameters.TickRadius - dataParameters.TickHeight) * Math.Cos(theta)),
+                    (float)((dataParameters.TickRadius - dataParameters.TickHeight) * Math.Sin(theta)),
+                    0f
+                );
+                newData.vectorList.Add(arc);
+                newData.vectorList.Add(tick);   
+            }
         }
     }
 }

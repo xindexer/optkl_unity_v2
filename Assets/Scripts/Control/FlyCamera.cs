@@ -9,11 +9,18 @@ namespace Optkl.Control
     {
         private Camera cam;
         private Vector3 mouseOrigin = Vector3.zero;
+        [SerializeField]
+        [Range(5000, 20000)]
+        private float KeyboardZoomSpeed;
+        [SerializeField]
+        [Range(300, 2000)]        
         private float MouseZoomSpeed = 500f;
+        [SerializeField]
+        [Range(100, 1000)]   
         private float panSpeed = 250;
         private Boolean isPanning = false;
         private float totalRun = 1.0f;
-        private Slider historySlider;
+        // private Slider historySlider;
 
         void Awake()
         {
@@ -29,29 +36,29 @@ namespace Optkl.Control
                 p = p * totalRun * 20;
             }
             cam.gameObject.transform.Translate(p);
-            if (Input.GetKey(KeyCode.Tab))
+            if (Input.GetKey(KeyCode.LeftBracket))
             {
-                cam.orthographicSize -= Time.deltaTime * 4000;
+                cam.orthographicSize -= Time.deltaTime * 8000;
             }
-            if (Input.GetKey(KeyCode.LeftShift))
+            if (Input.GetKey(KeyCode.RightBracket))
             {
-                cam.orthographicSize += Time.deltaTime * 4000;
+                cam.orthographicSize += Time.deltaTime * 8000;
             }
 
             if (Input.GetKeyDown(KeyCode.UpArrow))
             {
-                if (historySlider.IsActive())
-                {
-                    historySlider.value++;
-                }
+                // if (historySlider.IsActive())
+                // {
+                //     historySlider.value++;
+                // }
             }
 
             if (Input.GetKeyDown(KeyCode.DownArrow))
             {
-                if (historySlider.IsActive())
-                {
-                    historySlider.value--;
-                }
+                // if (historySlider.IsActive())
+                // {
+                //     historySlider.value--;
+                // }
             }
 
             float scroll = Input.GetAxis("Mouse ScrollWheel");
@@ -63,7 +70,7 @@ namespace Optkl.Control
                 isPanning = true;
             }
             // cancel on button release
-            if (!Input.GetMouseButton(0))
+            if (!Input.GetMouseButton(1))
                 isPanning = false;
             //move camera on X & Y
             if (isPanning)

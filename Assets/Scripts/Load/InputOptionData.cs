@@ -1,6 +1,6 @@
 using System;
 
-namespace Optkl.Data
+namespace Optkl.Load
 {
     public class InputOptionData
     {
@@ -44,6 +44,10 @@ namespace Optkl.Data
             }
         }
 
+        public DateTime GetTradeDate () {
+            return Convert.ToDateTime($"{month} {day}, {year} 12:00:00");
+        }
+
         public string FormatTradeDate
         {
             get
@@ -59,6 +63,39 @@ namespace Optkl.Data
                 return tradeDate.ToString("yyyyMMdd");
             }
         }
+
+        private string month;
+        public string Month {
+            get {
+                return month;
+            }
+            set {
+                month = value;
+            }
+        }
+
+
+        private string day;
+        public string Day {
+            get {
+                return day;
+            }
+            set {
+                day = value;
+            }
+        }
+
+
+        private string year;
+        public string Year {
+            get {
+                return year;
+            }
+            set {
+                year = value;
+            }
+        }
+
 
     }
 }

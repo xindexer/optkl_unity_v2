@@ -1,15 +1,12 @@
 using UnityEngine;
 using UnityEngine.UI;
-using Paroxe.SuperCalendar;
 using Optkl;
 using Optkl.Data;
+using Optkl.Load;
 using System.Collections;
 
 public class Opening : MonoBehaviour
 {
-
-    [SerializeField]
-    private Calendar calendar;
 
     [SerializeField]
     private InputField symbol;
@@ -28,11 +25,6 @@ public class Opening : MonoBehaviour
 
     public InputOptionData data = new InputOptionData();
 
-    public void OnCalendarChange()
-    {
-        data.TradeDate = calendar.DateTime;
-    }
-
     private void Start()
     {
         symbol.Select();
@@ -44,7 +36,7 @@ public class Opening : MonoBehaviour
     {
         if (symbol.text == "")
         {
-            data.Symbol = "AAPL";
+            data.Symbol = "GME";
         }
         else
         {
@@ -58,6 +50,6 @@ public class Opening : MonoBehaviour
         {
             data.Lookback = int.Parse(lookback.text); //verify int only
         }
-        optklManager.InitialLoad(data);
+        // optklManager.InitialLoad(data);
     }
 }

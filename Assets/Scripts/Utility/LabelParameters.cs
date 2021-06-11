@@ -25,7 +25,7 @@ namespace Optkl.Utilities
             int numberPies = 0;
             InitialParameters initialParameters = new InitialParameters();
             MaxData customMax = new MaxData();
-            initializeDataMax(initialParameters, dataMax, customMax, dataParameters.TradeDate);
+            initializeDataMax(initialParameters, dataMax, customMax, dataParameters.TradeName);
             for (int i = 0; i < optionData.Length; i++) 
             {
                 if (i == optionData.Length - 1)
@@ -55,12 +55,12 @@ namespace Optkl.Utilities
                     if (isFirst)
                     {
                         customStrike.expireDate.Add(prevDateTime, newData);
-                        dataStrike.tradeDate.Add(dataParameters.TradeDate, customStrike);
+                        dataStrike.tradeDate.Add(dataParameters.TradeName, customStrike);
                         isFirst = false;
                     }
                     else
                     {
-                        dataStrike.tradeDate[dataParameters.TradeDate].expireDate.Add(prevDateTime, newData);
+                        dataStrike.tradeDate[dataParameters.TradeName].expireDate.Add(prevDateTime, newData);
                     }
                     trackCircumference += (maxStrike - minStrike);
                     numberPies++;
@@ -76,7 +76,7 @@ namespace Optkl.Utilities
                 {
                     minStrike = optionData[i][3];
                 }
-                FindMaxValues(optionData[i], initialParameters, dataMax, customMax, dataParameters.TradeDate);
+                FindMaxValues(optionData[i], initialParameters, dataMax, customMax, dataParameters.TradeName);
             }
             trackCircumference *= 2;
             float pieSpace = dataParameters.PieSpacer / 100 * trackCircumference;
@@ -88,7 +88,7 @@ namespace Optkl.Utilities
             customSettings.settings.Add("TrackCircumference", trackCircumference);
             customSettings.settings.Add("PieSpace", pieSpace);
             customSettings.settings.Add("PowerWedgeSpace", powerWedgeSpace);
-            settings.tradeDate.Add(dataParameters.TradeDate, customSettings);
+            settings.tradeDate.Add(dataParameters.TradeName, customSettings);
         }
 
         private void initializeDataMax(InitialParameters initialParameters, DataMax dataMax, MaxData customMax, string tradeDate)

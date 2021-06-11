@@ -18,7 +18,6 @@ namespace Optkl.Data
         }
 #endif
 
-        [SerializeField]
         private string tradeDate;
         public string TradeDate
         {
@@ -30,6 +29,23 @@ namespace Optkl.Data
             {
                 tradeDate = value;
             }
+        }
+
+        private string tradeSymbol;
+        public string TradeSymbol
+        {
+            get
+            {
+                return tradeSymbol;
+            }
+            set
+            {
+                tradeSymbol = value;
+            }
+        }
+
+        public string TradeName {
+            get { return tradeSymbol + "-" + tradeDate; }
         }
 
         [SerializeField]
@@ -242,7 +258,7 @@ namespace Optkl.Data
         }
 
         [SerializeField]
-        [Range(0, 10)]
+        [Range(0.1f, 10f)]
         private int tickWidth = 1;
         public int TickWidth
         {
@@ -495,7 +511,6 @@ namespace Optkl.Data
            { "vega", true },
            { "rho", true },
            { "phi", true },
-           { "driftlessTheta", true },
         };
 
         [System.Serializable]

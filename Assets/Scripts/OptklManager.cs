@@ -1,6 +1,7 @@
 using UnityEngine;
 using Optkl.Utilities;
 using Optkl.Data;
+using Optkl.Load;
 using System;
 
 namespace Optkl
@@ -46,25 +47,20 @@ namespace Optkl
 
         [SerializeField]
         private Logger logger;
-
-        [SerializeField]
-        private Canvas openingCanvas;
-
-        [SerializeField]
-        private Canvas loadingCanvas;
-
-        [SerializeField]
-        private Canvas runningCanvas;
-
+        
         private LoadData loadData = new LoadData();
 
-        private Boolean blockOnValidate = true;
-
+        private float blockTimer;
+        
         private void Awake()
         {
             ClearCalculatedVariables();
             dataStorage.tradeDate.Clear();
-            StartCanvas();
+            InputOptionData data = new InputOptionData();
+            data.Symbol = "AAPL";
+            data.TradeDate = Convert.ToDateTime("Jun 7, 2021");
+            data.Lookback = 50;
+            InitialLoad(data);
         }
 
         private void ClearCalculatedVariables()
@@ -78,29 +74,32 @@ namespace Optkl
             settings.tradeDate.Clear();
         }
 
-        private void StartCanvas()
-        {
-            openingCanvas.gameObject.SetActive(true);
-            loadingCanvas.gameObject.SetActive(false);
-            runningCanvas.gameObject.SetActive(false);
-        }
-
         public void InitialLoad(InputOptionData data)
         {
-            openingCanvas.gameObject.SetActive(false);
-            loadingCanvas.gameObject.SetActive(true);
             logger.Log($"Loading {data.Symbol} for {data.JsonTradeDate}");
             logger.StartTimer();
             dataParameters.TradeDate = data.FormatTradeDate;
-            StartCoroutine(loadData.LoadFirstData(data, dataStorage, this));
+            StartCoroutine(loadData.LoadSymbolData(data, dataStorage, true, this));
+        }
+        
+        public void Load(InputOptionData data)
+        {
+            logger.Log($"Loading {data.Symbol} for {data.JsonTradeDate}");
+            logger.StartTimer();
+            dataParameters.TradeDate = data.FormatTradeDate;
+            StartCoroutine(loadData.LoadSymbolData(data, dataStorage, false, this));
         }
 
-        public void BuildIRIS(string tradeDate, Boolean redraw = false)
+        public void BuildIRIS(Boolean redraw = false, string symbol = "")
         {
 
             if (!redraw)
+            {
                 logger.EndTimer("Load Data");
-            StoragelData storageData = dataStorage.tradeDate[tradeDate];
+                blockTimer = Time.realtimeSinceStartup;
+                dataParameters.TradeSymbol = symbol;
+            }
+            StoragelData storageData = dataStorage.tradeDate[dataParameters.TradeName];
             logger.StartTimer();
             LabelParameters labelParameters = new LabelParameters();
             labelParameters.BuildLabels(storageData.optionDataSet, dataParameters, dataStrike, dataMax, settings);
@@ -155,20 +154,18 @@ namespace Optkl
 
         public void ShowIRIS()
         {
-            loadingCanvas.gameObject.SetActive(false);
-            runningCanvas.gameObject.SetActive(true);
-            blockOnValidate = false;
+            // ClearCalculatedVariables();            
             logger.EndTimer("Draw IRIS");
         }
 
         public void RespondToEvent()
         {
-            if (!blockOnValidate)
-            {
-                ClearCalculatedVariables();
-                Camera.main.backgroundColor = colorControl.backGroundColor;
-                BuildIRIS(dataParameters.TradeDate, true);
-            }
+            // if (Time.realtimeSinceStartup - blockTimer > 2)
+            // {
+            //     ClearCalculatedVariables();
+            //     Camera.main.backgroundColor = colorControl.backGroundColor;
+            //     BuildIRIS(true);
+            // }
         }
     }
 }

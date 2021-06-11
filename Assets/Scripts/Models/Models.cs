@@ -66,7 +66,7 @@ public class TrackControl
     public Boolean Active;
 
     [SerializeField]
-    [Range(0f, 1f)]
+    [Range(0f, 5f)]
     public float HeightMultiplier;
 
     public TrackControl(Boolean active, float heightMultiplier)
