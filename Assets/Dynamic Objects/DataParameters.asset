@@ -13,14 +13,14 @@ MonoBehaviour:
   m_Name: DataParameters
   m_EditorClassIdentifier: 
   changeParameters: {fileID: 11400000, guid: 08af508de12264d2093e48f2baf88e54, type: 2}
-  trackRadius: 6667
-  trackSpacer: 250
-  pieSpacer: 0.66
-  powerWedge: 1
-  trackThickness: 336
-  trackLineWidth: 1
-  greekInnerRadius: 3664
-  greekOuterRadius: 7747
+  trackRadius: 8000
+  trackSpacer: 150
+  pieSpacer: 0.75
+  powerWedge: 0.8
+  trackThickness: 377
+  trackLineWidth: 0.24
+  greekInnerRadius: 3562
+  greekOuterRadius: 7388
   greekSize: 5.4
   greekOpacity: 0.131
   negativeGreeks: 1

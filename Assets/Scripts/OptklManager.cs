@@ -1,5 +1,5 @@
 using UnityEngine;
-using Optkl.Utilities;
+using Optkl.Parameters;
 using Optkl.Data;
 using Optkl.Load;
 using System;
@@ -44,9 +44,6 @@ namespace Optkl
         private DataMax dataMax;
 
         [SerializeField]
-        private Settings settings;
-
-        [SerializeField]
         private Logger logger;
         
         private LoadData loadData = new LoadData();
@@ -71,7 +68,6 @@ namespace Optkl
             trackTickLabels.tradeDate.Clear();
             dataStrike.tradeDate.Clear();
             dataMax.tradeDate.Clear();
-            settings.tradeDate.Clear();
         }
 
         public void InitialLoad(InputOptionData data)
@@ -100,34 +96,29 @@ namespace Optkl
             }
             StorageData storageData = dataStorage.tradeDate[dataParameters.TradeName];
             logger.StartTimer();
-            LabelParameters labelParameters = new LabelParameters();
-            labelParameters.BuildLabels(
+            StrikeParameters strikeParameters = new StrikeParameters();
+            TrackReturn trackReturn = strikeParameters.BuildStrikeData(
                 storageData.optionDataSet, 
                 dataParameters, 
                 dataStrike, 
-                dataMax, 
-                settings);
+                dataMax);
             TickParameters tickParameters = new TickParameters();
             tickParameters.BuildTicks(
                 true,
-                storageData.optionDataSet,
                 trackData,
                 dataParameters,
                 dataStrike,
-                dataMax,
-                settings,
                 trackLabels,
-                trackTickLabels);
+                trackTickLabels,
+                trackReturn);
             tickParameters.BuildTicks(
                 false,
-                storageData.optionDataSet,
                 trackData,
                 dataParameters,
                 dataStrike,
-                dataMax,
-                settings,
                 trackLabels,
-                trackTickLabels
+                trackTickLabels,
+                trackReturn
             );
             TrackParameters trackParameters = new TrackParameters();
             trackParameters.BuildTracks(
@@ -138,7 +129,7 @@ namespace Optkl
                 dataParameters,
                 dataStrike,
                 dataMax,
-                settings);
+                trackReturn);
             drawManager.DrawOptions(
                 trackData,
                 trackColors,

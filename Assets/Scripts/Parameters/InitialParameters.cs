@@ -1,7 +1,7 @@
 
 using System.Collections.Generic;
 
-namespace Optkl.Utilities {
+namespace Optkl.Parameters {
 
     public class InitialParameters
     {

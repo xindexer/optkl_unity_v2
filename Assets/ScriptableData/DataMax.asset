@@ -14,10 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tradeDate:
     m_val: 7
-    m_keys:
-    - 2021Jun01
-    m_values:
-    - maxValues:
-        m_val: 7
-        m_keys: []
-        m_values: []
+    m_keys: []
+    m_values: []

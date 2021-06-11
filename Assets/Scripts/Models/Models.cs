@@ -108,3 +108,12 @@ public class TrackDataVectorList
     }
 }
 
+public class TrackReturn 
+{
+    public float TrackCircumference;
+    public float PieSpace;
+    public TrackReturn(float trackCirc, float pspace) {
+        TrackCircumference = trackCirc;
+        PieSpace = pspace;
+    }
+}

@@ -4,24 +4,20 @@ using System.Collections;
 using Optkl.Data;
 using System.Collections.Generic;
 
-namespace Optkl.Utilities
+namespace Optkl.Parameters
 {
     public class TickParameters
     {
         public void BuildTicks(
             Boolean call,
-            float[][] optionData,
             TrackData trackData,
             DataParameters dataParameters,
             DataStrike dataStrike,
-            DataMax dataMax,
-            Settings settings,
             TrackLabels trackLabels,
-            TrackTickLabels trackTickLabels)
+            TrackTickLabels trackTickLabels,
+            TrackReturn trackReturn)
         {
-            float trackCircumference = settings.tradeDate[dataParameters.TradeName].settings["TrackCircumference"];
-            float trackRadials = 2 * (float)Math.PI / trackCircumference;
-            float pieSpace = settings.tradeDate[dataParameters.TradeName].settings["PieSpace"];
+            float trackRadials = 2 * (float)Math.PI / trackReturn.TrackCircumference;
             Vector3 tickStart;
             float deltaTheta;
             int minorTick;
@@ -30,17 +26,17 @@ namespace Optkl.Utilities
             labelsContainer.labelList = new List<Label>();
             TickLabelList tickLabelContainer = new TickLabelList();
             tickLabelContainer.tickLabelList = new List<Label>();
-            if (trackCircumference <= 500)
+            if (trackReturn.TrackCircumference <= 500)
             {
                 minorTick = 1;
                 majorTick = 5;
             }
-            if (trackCircumference <= 4000)
+            if (trackReturn.TrackCircumference <= 4000)
             {
                 minorTick = 2;
                 majorTick = 10;
             }
-            else if (trackCircumference > 4000 && trackCircumference <= 10000)
+            else if (trackReturn.TrackCircumference > 4000 && trackReturn.TrackCircumference <= 10000)
             {
                 minorTick = 10;
                 majorTick = 50;
@@ -51,9 +47,9 @@ namespace Optkl.Utilities
                 majorTick = 250;
             }
             if (call)
-                deltaTheta = -pieSpace / 2 * trackRadials;
+                deltaTheta = -trackReturn.PieSpace / 2 * trackRadials;
             else
-                deltaTheta = pieSpace / 2 * trackRadials;
+                deltaTheta = trackReturn.PieSpace / 2 * trackRadials;
             float theta = (float)Math.PI / 2 + deltaTheta;
             ICollection<string> expiredDates = dataStrike.tradeDate[dataParameters.TradeName].expireDate.Keys;
             TrackDataList newData = new TrackDataList();
@@ -197,9 +193,9 @@ namespace Optkl.Utilities
                     );
                 }
                 if (call)
-                    theta -= pieSpace * trackRadials;
+                    theta -= trackReturn.PieSpace * trackRadials;
                 else
-                    theta += pieSpace * trackRadials;
+                    theta += trackReturn.PieSpace * trackRadials;
             }
             if (call) {
                 TrackDataContainer customTrack = new TrackDataContainer();

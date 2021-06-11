@@ -3,17 +3,16 @@ using System.Collections.Generic;
 using Optkl.Data;
 using UnityEngine;
 
-namespace Optkl.Utilities
+namespace Optkl.Parameters
 {
-    public class LabelParameters
+    public class StrikeParameters
     {
 
-        public void BuildLabels(
+        public TrackReturn BuildStrikeData(
             float[][] optionData,
             DataParameters dataParameters,
             DataStrike dataStrike,
-            DataMax dataMax,
-            Settings settings)
+            DataMax dataMax)
         {
             DateTime pvDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc); 
             string prevDateTime = pvDateTime.AddMilliseconds(optionData[0][1] * 1000 + 4.32e+7).ToString("yyyyMMMdd");
@@ -82,13 +81,7 @@ namespace Optkl.Utilities
             float pieSpace = dataParameters.PieSpacer / 100 * trackCircumference;
             float powerWedgeSpace = dataParameters.PowerWedge / 100 * trackCircumference;
             trackCircumference += powerWedgeSpace + (numberPies * 2 - 1) * pieSpace;
-
-            SettingsData customSettings = new SettingsData();
-            customSettings.settings = new SettingsNestedDict();
-            customSettings.settings.Add("TrackCircumference", trackCircumference);
-            customSettings.settings.Add("PieSpace", pieSpace);
-            customSettings.settings.Add("PowerWedgeSpace", powerWedgeSpace);
-            settings.tradeDate.Add(dataParameters.TradeName, customSettings);
+            return new TrackReturn(trackCircumference, pieSpace);
         }
 
         private void initializeDataMax(InitialParameters initialParameters, DataMax dataMax, MaxData customMax, string tradeDate)

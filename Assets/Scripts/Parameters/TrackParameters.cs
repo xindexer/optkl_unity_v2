@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using Optkl.Data;
 
 
-namespace Optkl.Utilities
+namespace Optkl.Parameters
 {
     public class TrackParameters
     {
@@ -16,13 +16,10 @@ namespace Optkl.Utilities
             DataParameters dataParameters,
             DataStrike dataStrike,
             DataMax dataMax,
-            Settings settings)
+            TrackReturn trackReturn)
         {
-
-            float trackCircumference = settings.tradeDate[dataParameters.TradeName].settings["TrackCircumference"];
-            float trackRadials = 2 * (float)Math.PI / trackCircumference;
-            float pieSpace = settings.tradeDate[dataParameters.TradeName].settings["PieSpace"];
-            float deltaTheta = pieSpace / 2 * trackRadials;
+            float trackRadials = 2 * (float)Math.PI / trackReturn.TrackCircumference;
+            float deltaTheta = trackReturn.PieSpace / 2 * trackRadials;
             float thetaCall = (float)Math.PI / 2 - deltaTheta;
             float thetaPut = (float)Math.PI / 2 + deltaTheta;
             DateTime pvDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
@@ -172,8 +169,8 @@ namespace Optkl.Utilities
                 string expireDateTime = expDateTime.AddMilliseconds(optionData[i][1] * 1000 + 4.32e+7).ToString("yyyyMMMdd");
                 if (expireDateTime != previousDateTime)
                 {
-                    thetaCall -= pieSpace * trackRadials;
-                    thetaPut += pieSpace * trackRadials;
+                    thetaCall -= trackReturn.PieSpace * trackRadials;
+                    thetaPut += trackReturn.PieSpace * trackRadials;
                     previousDateTime = expireDateTime;
                     strikeDiff = dataStrike.tradeDate[dataParameters.TradeName].expireDate[previousDateTime].strikeMin;
                 }
