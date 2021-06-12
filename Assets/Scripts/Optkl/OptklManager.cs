@@ -151,7 +151,7 @@ namespace Optkl
             }
             else 
             {
-                Camera.main.backgroundColor = colorControl.backGroundColor;
+                cam.backgroundColor = colorControl.backGroundColor;
                 BuildIRIS(true);
             }
         }

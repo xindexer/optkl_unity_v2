@@ -64,7 +64,7 @@ namespace Optkl.Data
         }
 
         [SerializeField]
-        [Range(0, 250)]
+        [Range(0, 500)]
         private int trackSpacer = 100;
         public int TrackSpacer
         {

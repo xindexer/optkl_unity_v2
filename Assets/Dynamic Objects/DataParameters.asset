@@ -13,8 +13,7 @@ MonoBehaviour:
   m_Name: DataParameters
   m_EditorClassIdentifier: 
   changeParameters: {fileID: 11400000, guid: 08af508de12264d2093e48f2baf88e54, type: 2}
-  tradeDate: 2021Jun07
-  trackRadius: 8000
+  trackRadius: 8479
   trackSpacer: 250
   pieSpacer: 0.5
   powerWedge: 0.5
@@ -22,7 +21,7 @@ MonoBehaviour:
   trackLineWidth: 1
   greekInnerRadius: 3664
   greekOuterRadius: 7747
-  greekSize: 7
+  greekSize: 3.9
   greekOpacity: 0.375
   negativeGreeks: 1
   tickRadius: 16000
@@ -30,7 +29,7 @@ MonoBehaviour:
   majorTickMultiplier: 3
   tickWidth: 2
   showTicks: 1
-  tickLabelSize: 10
+  tickLabelSize: 6.9
   tickLabelDistanceMultiplier: 8
   showTickLabels: 1
   labelSize: 12

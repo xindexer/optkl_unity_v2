@@ -724,18 +724,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3186df46bbbb04958a38b88f503f1a1a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cam: {fileID: 339478544}
   drawManager: {fileID: 339478547}
   dataStrike: {fileID: 11400000, guid: 6f932e2709cca4c1cba0a0c61741cc7b, type: 2}
   dataStorage: {fileID: 11400000, guid: e45dfd15bbc86471c9893546648c6eb2, type: 2}
-  trackData: {fileID: 11400000, guid: e1a57e659b29e4ee18ad666c48f180b6, type: 2}
-  trackColors: {fileID: 11400000, guid: 2a62b7ead8ce04d1aaab92cce61c12c5, type: 2}
   colorControl: {fileID: 11400000, guid: a30d16553265640ee87f9f548202f1a8, type: 2}
-  texturesAndMaterials: {fileID: 11400000, guid: b08d38ba686014525a457c99cee2e822, type: 2}
-  trackLabels: {fileID: 11400000, guid: 3dd997e72087947279a404940daa36b9, type: 2}
-  trackTickLabels: {fileID: 11400000, guid: edba11729eaaf4e8ead1cd265a49a084, type: 2}
   dataParameters: {fileID: 11400000, guid: b9fe65cab2c88479d97a7e68a33f0b90, type: 2}
   dataMax: {fileID: 11400000, guid: 96a6f16cee658437f8dcc9fee6cd80cf, type: 2}
-  settings: {fileID: 11400000, guid: 1a06fcb855f7b4943a74ffb302926261, type: 2}
   logger: {fileID: 11400000, guid: 0900e17bc51b247979f980849aa1f278, type: 2}
 --- !u!114 &339478547
 MonoBehaviour:

@@ -35,6 +35,11 @@ namespace Optkl.Parameters
                 minorTick = 10;
                 majorTick = 50;
             }
+            else if (circumferenceParameterData.TrackCircumference > 10000 && circumferenceParameterData.TrackCircumference <= 16000)
+            {
+                minorTick = 25;
+                majorTick = 100;
+            }
             else
             {
                 minorTick = 50;

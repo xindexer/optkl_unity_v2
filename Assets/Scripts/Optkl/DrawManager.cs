@@ -70,7 +70,7 @@ namespace Optkl
                 {
                     if (dataParameters.TrackOrder[key].Active)
                     {
-                        vectorLineData[key] = new VectorLine(key, trackPositionData[vectorLineData[key].name], dataParameters.TrackLineWidth);
+                        vectorLineData[key] = new VectorLine(key, empty, dataParameters.TrackLineWidth);
                     }
                 }
                 foreach (string key in dataParameters.ShowGreek.Keys)
