@@ -10,11 +10,25 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 91acdd613094744918b86b588fc0083a, type: 3}
-  m_Name: InTheMoney
+  m_Name: palette_brewer-seq-9c-BuPu
   m_EditorClassIdentifier: 
   changeParameters: {fileID: 11400000, guid: 08af508de12264d2093e48f2baf88e54, type: 2}
   palette:
   - serializedVersion: 2
-    rgba: 2147548928
+    rgba: 553516279
   - serializedVersion: 2
-    rgba: 0
+    rgba: 4294241504
+  - serializedVersion: 2
+    rgba: 4293317567
+  - serializedVersion: 2
+    rgba: 4292525214
+  - serializedVersion: 2
+    rgba: 4291204748
+  - serializedVersion: 2
+    rgba: 4289817484
+  - serializedVersion: 2
+    rgba: 4288496008
+  - serializedVersion: 2
+    rgba: 4286320513
+  - serializedVersion: 2
+    rgba: 4283105357

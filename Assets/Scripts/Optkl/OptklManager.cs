@@ -40,7 +40,6 @@ namespace Optkl
         
         private void Awake()
         {
-            dataStorage.tradeDate.Clear();
             ClearCalculatedVariables();
             InputOptionData data = new InputOptionData()
             {
@@ -50,7 +49,8 @@ namespace Optkl
             };
             InitialLoad(data);
         }
-        private void ClearCalculatedVariables()
+        
+        public void ClearCalculatedVariables()
         {
             dataStrike.tradeDate.Clear();
             dataMax.tradeDate.Clear();
@@ -66,6 +66,7 @@ namespace Optkl
         
         public void Load(InputOptionData data)
         {
+            ClearCalculatedVariables();
             logger.Log($"Loading {data.Symbol} for {data.JsonTradeDate}");
             logger.StartTimer();
             dataParameters.TradeDate = data.FormatTradeDate;
@@ -74,7 +75,6 @@ namespace Optkl
 
         public void BuildIRIS(Boolean redraw = false, string symbol = "")
         {
-
             if (!redraw)
             {
                 logger.EndTimer("Load Data");
@@ -82,12 +82,19 @@ namespace Optkl
             }
             StorageData storageData = dataStorage.tradeDate[dataParameters.TradeName];
             logger.StartTimer();
-            StrikeParameters strikeParameters = new StrikeParameters();
-            StrikeParameterData strikeParameterData = strikeParameters.BuildStrikeData(
-                storageData.optionDataSet, 
-                dataParameters, 
-                dataStrike, 
-                dataMax);
+            if (!dataStrike.tradeDate.TryGetValue(dataParameters.TradeName, out StrikeData value ))
+            {
+                StrikeParameters strikeParameters = new StrikeParameters();
+                strikeParameters.BuildStrikeData(
+                    storageData.optionDataSet,
+                    dataParameters,
+                    dataStrike,
+                    dataMax);
+            }
+            CircumferenceParameters circumferenceParameters = new CircumferenceParameters();
+            CircumferenceParameterData circumferenceParameterData = circumferenceParameters.CalculateCircumference(
+                    dataParameters,
+                    dataStrike);
             TickParameters tickParameters = new TickParameters();
             List<Label> tickLabelList = new List<Label>();
             List<Label> trackLabelList = new List<Label>();
@@ -96,7 +103,7 @@ namespace Optkl
                 true,
                 dataParameters,
                 dataStrike,
-                strikeParameterData,
+                circumferenceParameterData,
                 ref tickLabelList,
                 ref trackLabelList,
                 ref tickPositionData);
@@ -104,7 +111,7 @@ namespace Optkl
                 false,
                 dataParameters,
                 dataStrike,
-                strikeParameterData,
+                circumferenceParameterData,
                 ref tickLabelList,
                 ref trackLabelList,
                 ref tickPositionData
@@ -116,10 +123,10 @@ namespace Optkl
                 dataParameters,
                 dataStrike,
                 dataMax,
-                strikeParameterData,
+                circumferenceParameterData,
                 out Dictionary<string, List<Vector3>> trackPositionData,
                 out Dictionary<string, List<Color32>> trackColorData);
-            drawManager.DrawOptions(
+            drawManager.DrawIRIS(
                 trackPositionData,
                 trackColorData,
                 tickLabelList,
@@ -133,20 +140,18 @@ namespace Optkl
 
         public void ShowIRIS()
         {
-            ClearCalculatedVariables();
             logger.EndTimer("Draw IRIS");
         }
 
         public void RespondToEvent()
         {
-            if (_blockCounter < 5)
+            if (_blockCounter < 6)
             {
                 _blockCounter++;
             }
             else 
             {
-                ClearCalculatedVariables();
-                cam.backgroundColor = colorControl.backGroundColor;
+                Camera.main.backgroundColor = colorControl.backGroundColor;
                 BuildIRIS(true);
             }
         }

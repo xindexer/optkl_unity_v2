@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91acdd613094744918b86b588fc0083a, type: 3}
+  m_Name: palette_brewer-qual-12c-Set3
+  m_EditorClassIdentifier: 
+  changeParameters: {fileID: 11400000, guid: 08af508de12264d2093e48f2baf88e54, type: 2}
+  palette:
+  - serializedVersion: 2
+    rgba: 4291285901
+  - serializedVersion: 2
+    rgba: 4289986559
+  - serializedVersion: 2
+    rgba: 4292524734
+  - serializedVersion: 2
+    rgba: 4285694203
+  - serializedVersion: 2
+    rgba: 4292063616
+  - serializedVersion: 2
+    rgba: 4284658941
+  - serializedVersion: 2
+    rgba: 4285128371
+  - serializedVersion: 2
+    rgba: 4293250556
+  - serializedVersion: 2
+    rgba: 4292467161
+  - serializedVersion: 2
+    rgba: 4290609341
+  - serializedVersion: 2
+    rgba: 4291161036
+  - serializedVersion: 2
+    rgba: 4285525503

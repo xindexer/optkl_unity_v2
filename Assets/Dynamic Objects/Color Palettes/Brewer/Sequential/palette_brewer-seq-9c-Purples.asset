@@ -10,11 +10,25 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 91acdd613094744918b86b588fc0083a, type: 3}
-  m_Name: InTheMoney
+  m_Name: palette_brewer-seq-9c-Purples
   m_EditorClassIdentifier: 
   changeParameters: {fileID: 11400000, guid: 08af508de12264d2093e48f2baf88e54, type: 2}
   palette:
   - serializedVersion: 2
-    rgba: 2147548928
+    rgba: 553516028
   - serializedVersion: 2
-    rgba: 0
+    rgba: 4294307311
+  - serializedVersion: 2
+    rgba: 4293647066
+  - serializedVersion: 2
+    rgba: 4292656572
+  - serializedVersion: 2
+    rgba: 4291336862
+  - serializedVersion: 2
+    rgba: 4290411904
+  - serializedVersion: 2
+    rgba: 4288893290
+  - serializedVersion: 2
+    rgba: 4287571796
+  - serializedVersion: 2
+    rgba: 4286382143

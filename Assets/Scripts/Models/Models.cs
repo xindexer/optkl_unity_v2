@@ -108,30 +108,13 @@ public class TrackDataVectorList
     }
 }
 
-public class StrikeParameterData 
+public class CircumferenceParameterData 
 {
     public float TrackCircumference;
     public float PieSpace;
-    public StrikeParameterData(float trackCirc, float pspace) {
+    public CircumferenceParameterData(float trackCirc, float pspace) {
         TrackCircumference = trackCirc;
         PieSpace = pspace;
-    }
-}
-
-public class TickParameterData
-{
-    public Dictionary<string, List<Vector3>> TickPositionData;
-    public Dictionary<string, List<Label>> TickLabelData;
-    public Dictionary<string, List<Label>> TrackLabelData;
-
-    public TickParameterData(
-        Dictionary<string, List<Vector3>> tickPositionData,
-        Dictionary<string, List<Label>> tickLabelData,
-        Dictionary<string, List<Label>> trackLabelData)
-    {
-        TickPositionData = tickPositionData;
-        TickLabelData = tickLabelData;
-        TrackLabelData = trackLabelData;
     }
 }
 

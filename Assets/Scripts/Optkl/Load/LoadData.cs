@@ -1,5 +1,6 @@
 using System.Collections;
 using System;
+using System.IO;
 using UnityEngine;
 using UnityEngine.Networking;
 using Newtonsoft.Json;
@@ -14,7 +15,7 @@ namespace Optkl.Load {
             string jsonURL;
             if (firstLoad)
             {
-                jsonURL = "file:///Users/dangordon/unity/optkl/Assets/Scripts/Optkl/Load/AAPL20210607.json";
+                jsonURL = "file://" + Directory.GetCurrentDirectory() + "/Assets/Scripts/Optkl/Load/AAPL20210607.json";
             }
             else
             {

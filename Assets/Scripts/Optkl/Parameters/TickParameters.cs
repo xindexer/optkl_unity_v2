@@ -11,26 +11,26 @@ namespace Optkl.Parameters
             bool call,
             DataParameters dataParameters,
             DataStrike dataStrike,
-            StrikeParameterData strikeParameterData,
+            CircumferenceParameterData circumferenceParameterData,
             ref List<Label> tickLabelList,
             ref List<Label> trackLabelList,
             ref List<Vector3> tickPositionData)
         {
-            float trackRadials = 2 * (float)Math.PI / strikeParameterData.TrackCircumference;
+            float trackRadials = 2 * (float)Math.PI / circumferenceParameterData.TrackCircumference;
             float deltaTheta;
             int minorTick;
             int majorTick;
-            if (strikeParameterData.TrackCircumference <= 500)
+            if (circumferenceParameterData.TrackCircumference <= 500)
             {
                 minorTick = 1;
                 majorTick = 5;
             }
-            if (strikeParameterData.TrackCircumference <= 4000)
+            if (circumferenceParameterData.TrackCircumference <= 4000)
             {
                 minorTick = 2;
                 majorTick = 10;
             }
-            else if (strikeParameterData.TrackCircumference > 4000 && strikeParameterData.TrackCircumference <= 10000)
+            else if (circumferenceParameterData.TrackCircumference > 4000 && circumferenceParameterData.TrackCircumference <= 10000)
             {
                 minorTick = 10;
                 majorTick = 50;
@@ -41,9 +41,9 @@ namespace Optkl.Parameters
                 majorTick = 250;
             }
             if (call)
-                deltaTheta = -strikeParameterData.PieSpace / 2 * trackRadials;
+                deltaTheta = -circumferenceParameterData.PieSpace / 2 * trackRadials;
             else
-                deltaTheta = strikeParameterData.PieSpace / 2 * trackRadials;
+                deltaTheta = circumferenceParameterData.PieSpace / 2 * trackRadials;
             float theta = (float)Math.PI / 2 + deltaTheta;
             ICollection<string> expiredDates = dataStrike.tradeDate[dataParameters.TradeName].expireDate.Keys;
             foreach (string expiredObject in expiredDates) 
@@ -185,9 +185,9 @@ namespace Optkl.Parameters
                     );
                 }
                 if (call)
-                    theta -= strikeParameterData.PieSpace * trackRadials;
+                    theta -= circumferenceParameterData.PieSpace * trackRadials;
                 else
-                    theta += strikeParameterData.PieSpace * trackRadials;
+                    theta += circumferenceParameterData.PieSpace * trackRadials;
             }
         }
 

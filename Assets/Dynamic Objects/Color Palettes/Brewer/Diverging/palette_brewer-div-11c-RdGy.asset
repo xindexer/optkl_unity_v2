@@ -10,11 +10,29 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 91acdd613094744918b86b588fc0083a, type: 3}
-  m_Name: InTheMoney
+  m_Name: palette_brewer-div-11c-RdGy
   m_EditorClassIdentifier: 
   changeParameters: {fileID: 11400000, guid: 08af508de12264d2093e48f2baf88e54, type: 2}
   palette:
   - serializedVersion: 2
-    rgba: 2147548928
+    rgba: 4280221799
   - serializedVersion: 2
-    rgba: 0
+    rgba: 4281014450
+  - serializedVersion: 2
+    rgba: 4283261142
+  - serializedVersion: 2
+    rgba: 4286752244
+  - serializedVersion: 2
+    rgba: 4291288061
+  - serializedVersion: 2
+    rgba: 4294967295
+  - serializedVersion: 2
+    rgba: 4292927712
+  - serializedVersion: 2
+    rgba: 4290427578
+  - serializedVersion: 2
+    rgba: 4287072135
+  - serializedVersion: 2
+    rgba: 4283256141
+  - serializedVersion: 2
+    rgba: 4279900698

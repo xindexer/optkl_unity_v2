@@ -8,7 +8,7 @@ namespace Optkl.Parameters
     public class StrikeParameters
     {
 
-        public StrikeParameterData BuildStrikeData(
+        public void BuildStrikeData(
             float[][] optionData,
             DataParameters dataParameters,
             DataStrike dataStrike,
@@ -20,8 +20,6 @@ namespace Optkl.Parameters
             Boolean isFirst = true;
             float minStrike = 100000000f;
             float maxStrike = 0f;
-            float trackCircumference = 0f;
-            int numberPies = 0;
             InitialParameters initialParameters = new InitialParameters();
             MaxData customMax = new MaxData();
             initializeDataMax(initialParameters, dataMax, customMax, dataParameters.TradeName);
@@ -63,8 +61,6 @@ namespace Optkl.Parameters
                     {
                         dataStrike.tradeDate[dataParameters.TradeName].expireDate.Add(prevDateTime, newData);
                     }
-                    trackCircumference += (maxStrike - minStrike);
-                    numberPies++;
                     minStrike = 100000000f; 
                     maxStrike = 0f;
                     prevDateTime = currDateTime; 
@@ -79,11 +75,6 @@ namespace Optkl.Parameters
                 }
                 FindMaxValues(optionData[i], initialParameters, dataMax, customMax, dataParameters.TradeName);
             }
-            trackCircumference *= 2;
-            float pieSpace = dataParameters.PieSpacer / 100 * trackCircumference;
-            float powerWedgeSpace = dataParameters.PowerWedge / 100 * trackCircumference;
-            trackCircumference += powerWedgeSpace + (numberPies * 2 - 1) * pieSpace;
-            return new StrikeParameterData(trackCircumference, pieSpace);
         }
 
         private void initializeDataMax(InitialParameters initialParameters, DataMax dataMax, MaxData customMax, string tradeDate)

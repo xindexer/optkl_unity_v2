@@ -33,7 +33,7 @@ MonoBehaviour:
     - extTheo
     - inTheMoney
     m_values:
-    - {fileID: 11400000, guid: 0bb80dc7a4d624e70959f27d78ae863e, type: 2}
+    - {fileID: 11400000, guid: 47706dc3937b27746ba31365bebe286d, type: 2}
     - {fileID: 11400000, guid: 0bb80dc7a4d624e70959f27d78ae863e, type: 2}
     - {fileID: 11400000, guid: 0bb80dc7a4d624e70959f27d78ae863e, type: 2}
     - {fileID: 11400000, guid: 0bb80dc7a4d624e70959f27d78ae863e, type: 2}
@@ -60,3 +60,8 @@ MonoBehaviour:
     m_keys: []
     m_values: []
   backGroundColor: {r: 0, g: 0, b: 0, a: 1}
+  TickColor: {r: 1, g: 1, b: 1, a: 1}
+  LabelTickColor: {r: 1, g: 1, b: 1, a: 1}
+  LabelColor: {r: 1, g: 1, b: 1, a: 1}
+  AxisColor: {r: 1, g: 1, b: 1, a: 1}
+  SeanCircleColor: {r: 1, g: 1, b: 1, a: 1}

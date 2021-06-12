@@ -11,30 +11,6 @@ namespace Optkl
         [SerializeField]
         private GameObject labelPrefab;
 
-        private VectorLine yteLines;
-        private VectorLine OiLines;
-        private VectorLine VoluLines;
-        private VectorLine BidPxLines;
-        private VectorLine ValueLines;
-        private VectorLine AskPxLines;
-        private VectorLine BidIvLines;
-        private VectorLine MidIvLines;
-        private VectorLine AskIvLines;
-        private VectorLine smoothSmvVolLines;
-        private VectorLine iRateLines;
-        // private VectorLine divRateLines;
-        // private VectorLine residualRateDataLines;
-        private VectorLine extVolLines;
-        private VectorLine extTheoLines;
-        private VectorLine inTheMoneyLines;
-
-        private VectorLine deltaPoints;
-        private VectorLine gammaPoints;
-        private VectorLine thetaPoints;
-        private VectorLine vegaPoints;
-        private VectorLine rhoPoints;
-        private VectorLine phiPoints;
-
         private VectorLine Ticks;
 
         private VectorLine circle;
@@ -56,8 +32,9 @@ namespace Optkl
         private GameObject GOOptklContainer;
         private GameObject GOEnergyMap;
         private GameObject GOGreeks;
-
-        public void DrawOptions(
+        Dictionary<string, VectorLine> vectorLineData;
+        
+        public void DrawIRIS(
             Dictionary<string, List<Vector3>> trackPositionData,
             Dictionary<string, List<Color32>> trackColorData,
             List<Label> tickLabelList,
@@ -65,62 +42,45 @@ namespace Optkl
             List<Vector3> tickPositionData,
             ColorControl colorControl,
             DataParameters dataParameters,
-            Boolean redraw,
+            bool redraw,
             OptklManager optklManager)
         {
-            if (!redraw) {
-                GOContainer = new GameObject();
-                GOContainer.name = dataParameters.TradeName;
-                GOLabelContainer = new GameObject();
-                GOLabelContainer.name = "Labels";
+            if (!redraw)
+            {
+                GOContainer = new GameObject(){name = dataParameters.TradeName};
+                GOLabelContainer = new GameObject() {name = "Labels"};
                 GOLabelContainer.transform.SetParent(GOContainer.gameObject.transform);
-                GOLabel = new GameObject();
-                GOLabel.name = "ExpireDateLabels";
+                GOLabel = new GameObject() {name = "ExpireDateLabels"};
                 GOLabel.transform.SetParent(GOLabelContainer.gameObject.transform);
-                GOTickLabel = new GameObject();
-                GOTickLabel.name = "TickLabels";
+                GOTickLabel = new GameObject() {name = "TickLabels"};
                 GOTickLabel.transform.SetParent(GOLabelContainer.gameObject.transform);
-                GOTicksAxis = new GameObject();
-                GOTicksAxis.name = "Ticks and Axis";
+                GOTicksAxis = new GameObject() {name = "Ticks and Axis"};
                 GOTicksAxis.transform.SetParent(GOLabelContainer.gameObject.transform);
-
-                GOOptklContainer = new GameObject();
-                GOOptklContainer.name = "OptklData";
+                GOOptklContainer = new GameObject() {name = "OptklData"};
                 GOOptklContainer.transform.SetParent(GOContainer.gameObject.transform);
-                GOEnergyMap = new GameObject();
-                GOEnergyMap.name = "EnergyMap";
+                GOEnergyMap = new GameObject() {name = "EnergyMap"};
                 GOEnergyMap.transform.SetParent(GOOptklContainer.gameObject.transform);
-                GOGreeks = new GameObject();
-                GOGreeks.name = "Greeks";
+                GOGreeks = new GameObject() {name = "Greeks"};
                 GOGreeks.transform.SetParent(GOOptklContainer.gameObject.transform);
-
+                vectorLineData = new Dictionary<string, VectorLine>();
                 TickLabelContainer = new List<GameObject>();
                 TrackLabelContainer = new List<GameObject>();
-
                 List<Vector3> empty = new List<Vector3>();
-                yteLines = new VectorLine("yte", empty, dataParameters.TrackLineWidth);
-                OiLines = new VectorLine("Oi", empty, dataParameters.TrackLineWidth);
-                VoluLines = new VectorLine("Volu", empty, dataParameters.TrackLineWidth);
-                BidPxLines = new VectorLine("BidPx", empty, dataParameters.TrackLineWidth);
-                ValueLines = new VectorLine("Value", empty, dataParameters.TrackLineWidth);
-                AskPxLines = new VectorLine("AskPx", empty, dataParameters.TrackLineWidth);
-                BidIvLines = new VectorLine("BidIv", empty, dataParameters.TrackLineWidth);
-                MidIvLines = new VectorLine("MidIv", empty, dataParameters.TrackLineWidth);
-                AskIvLines = new VectorLine("AskIv", empty, dataParameters.TrackLineWidth);
-                smoothSmvVolLines = new VectorLine("smoothSmvVol", empty, dataParameters.TrackLineWidth);
-                iRateLines = new VectorLine("iRate", empty, dataParameters.TrackLineWidth);
-                // divRateLines = new VectorLine("divRate", empty, dataParameters.TrackLineWidth);
-                // residualRateDataLines = new VectorLine("residualRateData", empty, dataParameters.TrackLineWidth);
-                extVolLines = new VectorLine("extVol", empty, dataParameters.TrackLineWidth);
-                extTheoLines = new VectorLine("extTheo", empty, dataParameters.TrackLineWidth);
-                inTheMoneyLines = new VectorLine("inTheMoney", empty, dataParameters.TrackLineWidth);
+                foreach (string key in dataParameters.TrackOrder.Keys)
+                {
+                    if (dataParameters.TrackOrder[key].Active)
+                    {
+                        vectorLineData[key] = new VectorLine(key, trackPositionData[vectorLineData[key].name], dataParameters.TrackLineWidth);
+                    }
+                }
+                foreach (string key in dataParameters.ShowGreek.Keys)
+                {
+                    if (dataParameters.ShowGreek[key])
+                    {
+                        vectorLineData[key] = new VectorLine(key, empty, dataParameters.TrackLineWidth, LineType.Points);
+                    }
+                }
 
-                deltaPoints = new VectorLine("delta", empty, dataParameters.GreekSize, LineType.Points);
-                gammaPoints = new VectorLine("gamma", empty, dataParameters.GreekSize, LineType.Points);
-                thetaPoints = new VectorLine("theta", empty, dataParameters.GreekSize, LineType.Points);
-                vegaPoints = new VectorLine("vega", empty, dataParameters.GreekSize, LineType.Points);
-                rhoPoints = new VectorLine("rho", empty, dataParameters.GreekSize, LineType.Points);
-                phiPoints = new VectorLine("phi", empty, dataParameters.GreekSize, LineType.Points);
                 Ticks = new VectorLine("Ticks", empty, dataParameters.TickWidth);
                 foreach (Label tickLabel in tickLabelList)
                 {
@@ -157,78 +117,55 @@ namespace Optkl
                 SeanCircle = new VectorLine("SeanCircle", new List<Vector3>(500), 1f, LineType.Discrete);
                 SeanCircle2 = new VectorLine("SeanCircle2", new List<Vector3>(500), 1f, LineType.Discrete);
             }
-
-            List<VectorLine> trackList = new List<VectorLine>()
+            
+            foreach (string key in dataParameters.TrackOrder.Keys)
             {
-                yteLines,
-                OiLines,
-                VoluLines,
-                BidPxLines,
-                ValueLines,
-                AskPxLines,
-                BidIvLines,
-                MidIvLines,
-                AskIvLines,
-                smoothSmvVolLines,
-                iRateLines,
-                // divRateLines,
-                // residualRateDataLines,
-                extVolLines,
-                extTheoLines,
-                inTheMoneyLines
-            };
-
-            List<VectorLine> greekList = new List<VectorLine>()
+                if (dataParameters.TrackOrder[key].Active)
                 {
-                    deltaPoints,
-                    gammaPoints,
-                    thetaPoints,
-                    vegaPoints,
-                    rhoPoints,
-                    phiPoints,
-            };
-
-            foreach (VectorLine line in trackList)
-            {
-                if (dataParameters.TrackOrder[line.name].Active)
-                {
-                    line.active = true;
-                    line.points3 = trackPositionData[line.name];
-                    line.SetColors(trackColorData[line.name]);
-                    line.SetWidth(dataParameters.TrackLineWidth, 0, line.GetSegmentNumber());
-                    //if (texturesAndMaterials.OptklTextures.ContainsKey(line.name))
-                    //    line.texture = texturesAndMaterials.OptklTextures[line.name].Texture;
-                    //if (texturesAndMaterials.OptklTextures.ContainsKey(line.name))
-                    //    line.material = texturesAndMaterials.OptklTextures[line.name].Material;
-                    line.Draw3D();
-                    line.rectTransform.transform.SetParent(GOEnergyMap.transform);
+                    vectorLineData[key].active = true;
+                    vectorLineData[key].points3 = trackPositionData[vectorLineData[key].name];
+                    vectorLineData[key].SetColors(trackColorData[vectorLineData[key].name]);
+                    vectorLineData[key].SetWidth(dataParameters.TrackLineWidth, 0, vectorLineData[key].GetSegmentNumber());
+                    vectorLineData[key].Draw3D();
+                    vectorLineData[key].rectTransform.transform.SetParent(GOEnergyMap.transform);
                 }
                 else
                 {
-                    line.active = false;
+                    try
+                    {
+                        vectorLineData[key].active = false;
+                    }
+                    catch
+                    {
+                        // Debug.Log(key);
+                    }
                 }
-                line.rectTransform.transform.SetParent(GOEnergyMap.transform);
             }
 
-            foreach (VectorLine point in greekList)
+            foreach (string key in dataParameters.ShowGreek.Keys)
             {
-                if (dataParameters.ShowGreek[point.name])
+                if (dataParameters.ShowGreek[key])
                 {
-                    point.active = true;
-                    point.points3 = trackPositionData[point.name];
-                    point.SetColors(trackColorData[point.name]);
-                    point.SetWidth(dataParameters.GreekSize, 0, point.GetSegmentNumber());
-                    // if (texturesAndMaterials.OptklTextures.ContainsKey(point.name))
-                    //     point.texture = texturesAndMaterials.OptklTextures[point.name].Texture;
-                    // if (texturesAndMaterials.OptklTextures.ContainsKey(point.name))
-                    //     point.material = texturesAndMaterials.OptklTextures[point.name].Material;
-                    point.Draw3D();
+                    vectorLineData[key].active = true;
+                    vectorLineData[key].points3 = trackPositionData[vectorLineData[key].name];
+                    vectorLineData[key].SetColors(trackColorData[vectorLineData[key].name]);
+                    vectorLineData[key].SetWidth(dataParameters.GreekSize, 0, vectorLineData[key].GetSegmentNumber());
+                    vectorLineData[key].Draw3D();
                 }
                 else
                 {
-                    point.active = false;
+                    try
+                    {
+                        vectorLineData[key].active = false;
+                    }
+                    catch {}
                 }
-                point.rectTransform.transform.SetParent(GOGreeks.transform);
+
+                try
+                {
+                    vectorLineData[key].rectTransform.transform.SetParent(GOGreeks.transform);
+                }
+                catch {}
             }
 
             if (dataParameters.ShowTicks)

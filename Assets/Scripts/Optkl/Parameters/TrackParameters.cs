@@ -14,15 +14,15 @@ namespace Optkl.Parameters
             DataParameters dataParameters,
             DataStrike dataStrike,
             DataMax dataMax,
-            StrikeParameterData strikeParameterData,
+            CircumferenceParameterData circumferenceParameterData,
             out Dictionary<string, List<Vector3>> trackPositionData,
             out Dictionary<string, List<Color32>> trackColorData
             )
         {
             trackPositionData = new Dictionary<string, List<Vector3>>();
             trackColorData = new Dictionary<string, List<Color32>>();
-            float trackRadials = 2 * (float)Math.PI / strikeParameterData.TrackCircumference;
-            float deltaTheta = strikeParameterData.PieSpace / 2 * trackRadials;
+            float trackRadials = 2 * (float)Math.PI / circumferenceParameterData.TrackCircumference;
+            float deltaTheta = circumferenceParameterData.PieSpace / 2 * trackRadials;
             float thetaCall = (float)Math.PI / 2 - deltaTheta;
             float thetaPut = (float)Math.PI / 2 + deltaTheta;
             DateTime pvDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
@@ -56,8 +56,8 @@ namespace Optkl.Parameters
                 string expireDateTime = expDateTime.AddMilliseconds(optionData[i][1] * 1000 + 4.32e+7).ToString("yyyyMMMdd");
                 if (expireDateTime != previousDateTime)
                 {
-                    thetaCall -= strikeParameterData.PieSpace * trackRadials;
-                    thetaPut += strikeParameterData.PieSpace * trackRadials;
+                    thetaCall -= circumferenceParameterData.PieSpace * trackRadials;
+                    thetaPut += circumferenceParameterData.PieSpace * trackRadials;
                     previousDateTime = expireDateTime;
                     strikeDiff = dataStrike.tradeDate[dataParameters.TradeName].expireDate[previousDateTime].strikeMin;
                 }

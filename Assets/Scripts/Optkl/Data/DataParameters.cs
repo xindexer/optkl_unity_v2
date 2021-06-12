@@ -49,7 +49,7 @@ namespace Optkl.Data
         }
 
         [SerializeField]
-        [Range(5000, 8000)]
+        [Range(5000, 12000)]
         private int trackRadius = 6000;
         public int TrackRadius
         {
