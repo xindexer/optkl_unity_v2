@@ -11,6 +11,9 @@ namespace Optkl
     public class OptklManager : MonoBehaviour
     {
         [SerializeField]
+        private Camera cam;
+        
+        [SerializeField]
         private DrawManager drawManager;
 
         [SerializeField]
@@ -20,23 +23,8 @@ namespace Optkl
         private DataStorage dataStorage;
 
         [SerializeField]
-        private TrackData trackData;
-
-        [SerializeField]
-        private TrackColors trackColors;
-
-        [SerializeField]
         private ColorControl colorControl;
-
-        [SerializeField]
-        private TexturesAndMaterials texturesAndMaterials;
-
-        [SerializeField]
-        private TrackLabels trackLabels;
-
-        [SerializeField]
-        private TrackTickLabels trackTickLabels;
-
+        
         [SerializeField]
         private DataParameters dataParameters;
 
@@ -46,26 +34,24 @@ namespace Optkl
         [SerializeField]
         private Logger logger;
         
-        private LoadData loadData = new LoadData();
+        private LoadData _loadData = new LoadData();
 
-        private int blockCounter = 0;
+        private int _blockCounter = 0;
         
         private void Awake()
         {
             dataStorage.tradeDate.Clear();
             ClearCalculatedVariables();
-            InputOptionData data = new InputOptionData();
-            data.Symbol = "AAPL";
-            data.TradeDate = Convert.ToDateTime("Jun 7, 2021");
-            data.Lookback = 50;
+            InputOptionData data = new InputOptionData()
+            {
+                Symbol = "AAPL",
+                TradeDate = Convert.ToDateTime("Jun 7, 2021"),
+                Lookback = 50
+            };
             InitialLoad(data);
         }
         private void ClearCalculatedVariables()
         {
-            trackData.tradeDate.Clear();
-            trackColors.tradeDate.Clear();
-            trackLabels.tradeDate.Clear();
-            trackTickLabels.tradeDate.Clear();
             dataStrike.tradeDate.Clear();
             dataMax.tradeDate.Clear();
         }
@@ -75,7 +61,7 @@ namespace Optkl
             logger.Log($"Loading {data.Symbol} for {data.JsonTradeDate}");
             logger.StartTimer();
             dataParameters.TradeDate = data.FormatTradeDate;
-            StartCoroutine(loadData.LoadSymbolData(data, dataStorage, true, this));
+            StartCoroutine(_loadData.LoadSymbolData(data, dataStorage, true, this));
         }
         
         public void Load(InputOptionData data)
@@ -83,7 +69,7 @@ namespace Optkl
             logger.Log($"Loading {data.Symbol} for {data.JsonTradeDate}");
             logger.StartTimer();
             dataParameters.TradeDate = data.FormatTradeDate;
-            StartCoroutine(loadData.LoadSymbolData(data, dataStorage, false, this));
+            StartCoroutine(_loadData.LoadSymbolData(data, dataStorage, false, this));
         }
 
         public void BuildIRIS(Boolean redraw = false, string symbol = "")
@@ -97,45 +83,48 @@ namespace Optkl
             StorageData storageData = dataStorage.tradeDate[dataParameters.TradeName];
             logger.StartTimer();
             StrikeParameters strikeParameters = new StrikeParameters();
-            TrackReturn trackReturn = strikeParameters.BuildStrikeData(
+            StrikeParameterData strikeParameterData = strikeParameters.BuildStrikeData(
                 storageData.optionDataSet, 
                 dataParameters, 
                 dataStrike, 
                 dataMax);
             TickParameters tickParameters = new TickParameters();
+            List<Label> tickLabelList = new List<Label>();
+            List<Label> trackLabelList = new List<Label>();
+            List<Vector3> tickPositionData = new List<Vector3>();
             tickParameters.BuildTicks(
                 true,
-                trackData,
                 dataParameters,
                 dataStrike,
-                trackLabels,
-                trackTickLabels,
-                trackReturn);
+                strikeParameterData,
+                ref tickLabelList,
+                ref trackLabelList,
+                ref tickPositionData);
             tickParameters.BuildTicks(
                 false,
-                trackData,
                 dataParameters,
                 dataStrike,
-                trackLabels,
-                trackTickLabels,
-                trackReturn
+                strikeParameterData,
+                ref tickLabelList,
+                ref trackLabelList,
+                ref tickPositionData
             );
             TrackParameters trackParameters = new TrackParameters();
             trackParameters.BuildTracks(
                 storageData.optionDataSet,
-                trackData,
-                trackColors,
                 colorControl,
                 dataParameters,
                 dataStrike,
                 dataMax,
-                trackReturn);
+                strikeParameterData,
+                out Dictionary<string, List<Vector3>> trackPositionData,
+                out Dictionary<string, List<Color32>> trackColorData);
             drawManager.DrawOptions(
-                trackData,
-                trackColors,
-                trackLabels,
-                trackTickLabels,
-                texturesAndMaterials,
+                trackPositionData,
+                trackColorData,
+                tickLabelList,
+                trackLabelList,
+                tickPositionData,
                 colorControl,
                 dataParameters,
                 redraw,
@@ -150,14 +139,14 @@ namespace Optkl
 
         public void RespondToEvent()
         {
-            if (blockCounter < 5)
+            if (_blockCounter < 5)
             {
-                blockCounter++;
+                _blockCounter++;
             }
             else 
             {
                 ClearCalculatedVariables();
-                Camera.main.backgroundColor = colorControl.backGroundColor;
+                cam.backgroundColor = colorControl.backGroundColor;
                 BuildIRIS(true);
             }
         }

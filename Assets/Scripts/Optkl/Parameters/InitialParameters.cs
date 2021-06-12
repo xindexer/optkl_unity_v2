@@ -1,5 +1,6 @@
 
 using System.Collections.Generic;
+using Unity.Collections;
 
 namespace Optkl.Parameters {
 
@@ -26,7 +27,7 @@ namespace Optkl.Parameters {
             { "smoothSmvVol", new OptionDataParameters(17, "smoothSmvVol", 10) },
             { "pBidIv", new OptionDataParameters(18, "BidIv", 6) },
             { "pMidIv", new OptionDataParameters(19, "MidIv", 7) },
-            { "pAskIv", new OptionDataParameters(20, "AksIv", 8) },
+            { "pAskIv", new OptionDataParameters(20, "AskIv", 8) },
             { "iRate", new OptionDataParameters(21, "iRate", 11) },
             { "divRate", new OptionDataParameters(22, "divRate", 12) },
             { "residualRateData", new OptionDataParameters(23, "residualRateData", 13) },
@@ -50,8 +51,33 @@ namespace Optkl.Parameters {
             {
                 return parameterPosition[key];
             }
-            
         }
+
+        [ReadOnly]
+        public Dictionary<string, CallPutPair> CallPutMatch = new Dictionary<string, CallPutPair>()
+        {
+            {"yte", new CallPutPair("yte", "yte")},
+            {"Volu", new CallPutPair("cVolu", "pVolu")},
+            {"Oi", new CallPutPair("cOi", "pOi")},
+            {"BidPx", new CallPutPair("cBidPx", "pBidPx")},
+            {"Value", new CallPutPair("cValue", "pValue")},
+            {"AskPx", new CallPutPair("cAskPx", "pAskPx")},
+            {"BidIv", new CallPutPair("cBidIv", "pBidIv")},
+            {"MidIv", new CallPutPair("cMidIv", "pMidIv")},
+            {"AskIv", new CallPutPair("cAskIv", "pAskIv")},
+            {"smoothSmvVol", new CallPutPair("smoothSmvVol", "smoothSmvVol")},
+            {"iRate", new CallPutPair("iRate", "iRate")},
+            {"divRate", new CallPutPair("divRate", "divRate")},
+            {"residualRateData", new CallPutPair("residualRateData", "residualRateData")},
+            {"delta", new CallPutPair("delta", "delta")},
+            {"gamma", new CallPutPair("gamma", "gamma")},
+            {"theta", new CallPutPair("theta", "theta")},
+            {"vega", new CallPutPair("vega", "vega")},
+            {"rho", new CallPutPair("rho", "rho")},
+            {"phi", new CallPutPair("phi", "phi")},
+            {"extVol", new CallPutPair("extVol", "extVol")},
+            {"extTheo", new CallPutPair("extCTheo", "extPTheo")},
+        };
     }
 }
 

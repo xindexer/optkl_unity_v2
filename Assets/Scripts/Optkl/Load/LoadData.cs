@@ -3,9 +3,9 @@ using System;
 using UnityEngine;
 using UnityEngine.Networking;
 using Newtonsoft.Json;
-using Optkl.Load;
+using Optkl.Data;
 
-namespace Optkl.Data {
+namespace Optkl.Load {
 
     public class LoadData
     {
@@ -14,7 +14,7 @@ namespace Optkl.Data {
             string jsonURL;
             if (firstLoad)
             {
-                jsonURL = "file:///Users/dangordon/unity/optkl/Assets/Scripts/Load/AAPL20210607.json";
+                jsonURL = "file:///Users/dangordon/unity/optkl/Assets/Scripts/Optkl/Load/AAPL20210607.json";
             }
             else
             {

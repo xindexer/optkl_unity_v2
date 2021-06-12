@@ -35,8 +35,7 @@ namespace Optkl
         private VectorLine rhoPoints;
         private VectorLine phiPoints;
 
-        private VectorLine CallTicks;
-        private VectorLine PutTicks;
+        private VectorLine Ticks;
 
         private VectorLine circle;
         private VectorLine circleHalf;
@@ -46,10 +45,8 @@ namespace Optkl
         private VectorLine SeanTicks;
 
 
-        private List<GameObject> CallTickLabelContainer = new List<GameObject>();
-        private List<GameObject> PutTickLabelContainer = new List<GameObject>();
-        private List<GameObject> CallLabelContainer = new List<GameObject>();
-        private List<GameObject> PutLabelContainer = new List<GameObject>();
+        private List<GameObject> TickLabelContainer = new List<GameObject>();
+        private List<GameObject> TrackLabelContainer = new List<GameObject>();
 
         private GameObject GOContainer;
         private GameObject GOLabelContainer;
@@ -61,11 +58,11 @@ namespace Optkl
         private GameObject GOGreeks;
 
         public void DrawOptions(
-            TrackData trackData,
-            TrackColors trackColors,
-            TrackLabels trackLabels,
-            TrackTickLabels trackTickLabels,
-            TexturesAndMaterials texturesAndMaterials,
+            Dictionary<string, List<Vector3>> trackPositionData,
+            Dictionary<string, List<Color32>> trackColorData,
+            List<Label> tickLabelList,
+            List<Label> trackLabelList,
+            List<Vector3> tickPositionData,
             ColorControl colorControl,
             DataParameters dataParameters,
             Boolean redraw,
@@ -97,10 +94,8 @@ namespace Optkl
                 GOGreeks.name = "Greeks";
                 GOGreeks.transform.SetParent(GOOptklContainer.gameObject.transform);
 
-                CallTickLabelContainer = new List<GameObject>();
-                PutTickLabelContainer = new List<GameObject>();
-                CallLabelContainer = new List<GameObject>();
-                PutLabelContainer = new List<GameObject>();
+                TickLabelContainer = new List<GameObject>();
+                TrackLabelContainer = new List<GameObject>();
 
                 List<Vector3> empty = new List<Vector3>();
                 yteLines = new VectorLine("yte", empty, dataParameters.TrackLineWidth);
@@ -126,54 +121,30 @@ namespace Optkl
                 vegaPoints = new VectorLine("vega", empty, dataParameters.GreekSize, LineType.Points);
                 rhoPoints = new VectorLine("rho", empty, dataParameters.GreekSize, LineType.Points);
                 phiPoints = new VectorLine("phi", empty, dataParameters.GreekSize, LineType.Points);
-                CallTicks = new VectorLine("CallTicks", empty, dataParameters.TickWidth);
-                PutTicks = new VectorLine("PutTicks", empty, dataParameters.TickWidth);
-                for (int i = 0; i < trackTickLabels.tradeDate[dataParameters.TradeName].side["CallTickLabels"].tickLabelList.Count; i++)
+                Ticks = new VectorLine("Ticks", empty, dataParameters.TickWidth);
+                foreach (Label tickLabel in tickLabelList)
                 {
                     GameObject labelObject = (GameObject)Instantiate(
                         labelPrefab.transform.gameObject,
-                        trackTickLabels.tradeDate[dataParameters.TradeName].side["CallTickLabels"].tickLabelList[i].Location,
-                        trackTickLabels.tradeDate[dataParameters.TradeName].side["CallTickLabels"].tickLabelList[i].Rotation);
-                    labelObject.name = "CallTickLabel_" + trackTickLabels.tradeDate[dataParameters.TradeName].side["CallTickLabels"].tickLabelList[i].Text;
+                        tickLabel.Location,
+                        tickLabel.Rotation);
+                    labelObject.name = "TickLabel_" + tickLabel.Text;
                     labelObject.transform.SetParent(GOTickLabel.gameObject.transform);
                     TextMesh t = (TextMesh)labelObject.GetComponent(typeof(TextMesh));
-                    t.text = trackTickLabels.tradeDate[dataParameters.TradeName].side["CallTickLabels"].tickLabelList[i].Text;
-                    CallTickLabelContainer.Add(labelObject);
+                    t.text = tickLabel.Text;
+                    TickLabelContainer.Add(labelObject);
                 }
-                for (int i = 0; i < trackTickLabels.tradeDate[dataParameters.TradeName].side["PutTickLabels"].tickLabelList.Count; i++)
+                foreach (Label trackLabel in trackLabelList)
                 {
-                    GameObject labelObject = (GameObject)Instantiate(labelPrefab.transform.gameObject,
-                        trackTickLabels.tradeDate[dataParameters.TradeName].side["PutTickLabels"].tickLabelList[i].Location,
-                        trackTickLabels.tradeDate[dataParameters.TradeName].side["PutTickLabels"].tickLabelList[i].Rotation);
-                    labelObject.name = "PutTickLabel_" + trackTickLabels.tradeDate[dataParameters.TradeName].side["CallTickLabels"].tickLabelList[i].Text;
+                    GameObject labelObject = (GameObject)Instantiate(
+                        labelPrefab.transform.gameObject,
+                        trackLabel.Location,
+                        trackLabel.Rotation);
+                    labelObject.name = "TrackLabel_" + trackLabel.Text;
                     labelObject.transform.SetParent(GOTickLabel.gameObject.transform);
                     TextMesh t = (TextMesh)labelObject.GetComponent(typeof(TextMesh));
-                    t.text = trackTickLabels.tradeDate[dataParameters.TradeName].side["PutTickLabels"].tickLabelList[i].Text;
-                    PutTickLabelContainer.Add(labelObject);
-                }
-                for (int i = 0; i < trackLabels.tradeDate[dataParameters.TradeName].side["CallLabels"].labelList.Count; i++)
-                {
-                    GameObject labelObject = (GameObject)Instantiate(
-                        labelPrefab.transform.gameObject,
-                        trackLabels.tradeDate[dataParameters.TradeName].side["CallLabels"].labelList[i].Location,
-                        trackLabels.tradeDate[dataParameters.TradeName].side["CallLabels"].labelList[i].Rotation);
-                    labelObject.name = "CallLabel_" + trackLabels.tradeDate[dataParameters.TradeName].side["CallLabels"].labelList[i].Text;
-                    labelObject.transform.SetParent(GOLabel.gameObject.transform);
-                    TextMesh t = (TextMesh)labelObject.GetComponent(typeof(TextMesh));
-                    t.text = trackLabels.tradeDate[dataParameters.TradeName].side["CallLabels"].labelList[i].Text;
-                    CallLabelContainer.Add(labelObject);
-                }
-                for (int i = 0; i < trackLabels.tradeDate[dataParameters.TradeName].side["PutLabels"].labelList.Count; i++)
-                {
-                    GameObject labelObject = (GameObject)Instantiate(
-                        labelPrefab.transform.gameObject,
-                        trackLabels.tradeDate[dataParameters.TradeName].side["PutLabels"].labelList[i].Location,
-                        trackLabels.tradeDate[dataParameters.TradeName].side["PutLabels"].labelList[i].Rotation);
-                    labelObject.name = "PutLabel_" + trackLabels.tradeDate[dataParameters.TradeName].side["PutLabels"].labelList[i].Text;
-                    labelObject.transform.SetParent(GOLabel.gameObject.transform);
-                    TextMesh t = (TextMesh)labelObject.GetComponent(typeof(TextMesh));
-                    t.text = trackLabels.tradeDate[dataParameters.TradeName].side["PutLabels"].labelList[i].Text;
-                    PutLabelContainer.Add(labelObject);
+                    t.text = trackLabel.Text;
+                    TrackLabelContainer.Add(labelObject);
                 }
 
                 // axis
@@ -222,8 +193,8 @@ namespace Optkl
                 if (dataParameters.TrackOrder[line.name].Active)
                 {
                     line.active = true;
-                    line.points3 = trackData.tradeDate[dataParameters.TradeName].trackName[line.name].vectorList;
-                    line.SetColors(trackColors.tradeDate[dataParameters.TradeName].trackName[line.name].colorList);
+                    line.points3 = trackPositionData[line.name];
+                    line.SetColors(trackColorData[line.name]);
                     line.SetWidth(dataParameters.TrackLineWidth, 0, line.GetSegmentNumber());
                     //if (texturesAndMaterials.OptklTextures.ContainsKey(line.name))
                     //    line.texture = texturesAndMaterials.OptklTextures[line.name].Texture;
@@ -244,8 +215,8 @@ namespace Optkl
                 if (dataParameters.ShowGreek[point.name])
                 {
                     point.active = true;
-                    point.points3 = trackData.tradeDate[dataParameters.TradeName].trackName[point.name].vectorList;
-                    point.SetColors(trackColors.tradeDate[dataParameters.TradeName].trackName[point.name].colorList);
+                    point.points3 = trackPositionData[point.name];
+                    point.SetColors(trackColorData[point.name]);
                     point.SetWidth(dataParameters.GreekSize, 0, point.GetSegmentNumber());
                     // if (texturesAndMaterials.OptklTextures.ContainsKey(point.name))
                     //     point.texture = texturesAndMaterials.OptklTextures[point.name].Texture;
@@ -262,98 +233,55 @@ namespace Optkl
 
             if (dataParameters.ShowTicks)
             {
-                CallTicks.active = true;
-                CallTicks.points3 = trackData.tradeDate[dataParameters.TradeName].trackName[CallTicks.name].vectorList;
-                CallTicks.SetColor(colorControl.TickColor);
-                CallTicks.SetWidth(dataParameters.TickWidth, 0, CallTicks.GetSegmentNumber());
-                CallTicks.Draw3D();
-                CallTicks.rectTransform.transform.SetParent(GOTicksAxis.transform);
-                PutTicks.active = true;
-                PutTicks.points3 = trackData.tradeDate[dataParameters.TradeName].trackName[PutTicks.name].vectorList;
-                PutTicks.SetColor(colorControl.TickColor);
-                PutTicks.SetWidth(dataParameters.TickWidth, 0, PutTicks.GetSegmentNumber());
-                PutTicks.Draw3D();
-                PutTicks.rectTransform.transform.SetParent(GOTicksAxis.transform);
+                Ticks.active = true;
+                Ticks.points3 = tickPositionData;
+                Ticks.SetColor(colorControl.TickColor);
+                Ticks.SetWidth(dataParameters.TickWidth, 0, Ticks.GetSegmentNumber());
+                Ticks.Draw3D();
+                Ticks.rectTransform.transform.SetParent(GOTicksAxis.transform);
             }
             else
             {
-                CallTicks.active = false;
-                PutTicks.active = false;
+                Ticks.active = false;
             }
 
             if (dataParameters.ShowTickLabels)
             {
-                for (int i = 0; i < CallTickLabelContainer.Count; i++)
+                for (int i = 0; i < TickLabelContainer.Count; i++)
                 {
-                    CallTickLabelContainer[i].gameObject.SetActive(true);
-                    TextMesh t = (TextMesh)CallTickLabelContainer[i].GetComponent(typeof(TextMesh));
+                    TickLabelContainer[i].gameObject.SetActive(true);
+                    TextMesh t = (TextMesh)TickLabelContainer[i].GetComponent(typeof(TextMesh));
                     t.color = colorControl.LabelTickColor;
-                    CallTickLabelContainer[i].gameObject.transform.localScale = new Vector3(dataParameters.TickLabelSize, dataParameters.TickLabelSize, 0f);
-                    CallTickLabelContainer[i].gameObject.transform.localPosition =
-                        trackTickLabels.tradeDate[dataParameters.TradeName].side["CallTickLabels"].tickLabelList[i].Location;
-                    CallTickLabelContainer[i].gameObject.transform.localRotation =
-                        trackTickLabels.tradeDate[dataParameters.TradeName].side["CallTickLabels"].tickLabelList[i].Rotation;
-                }
-
-                for (int i = 0; i < PutTickLabelContainer.Count; i++)
-                {
-                    PutTickLabelContainer[i].gameObject.SetActive(true);
-                    TextMesh t = (TextMesh)PutTickLabelContainer[i].GetComponent(typeof(TextMesh));
-                    t.color = colorControl.LabelTickColor;
-                    PutTickLabelContainer[i].gameObject.transform.localScale = new Vector3(dataParameters.TickLabelSize, dataParameters.TickLabelSize, 0f);
-                    PutTickLabelContainer[i].gameObject.transform.localPosition =
-                        trackTickLabels.tradeDate[dataParameters.TradeName].side["PutTickLabels"].tickLabelList[i].Location;
-                    PutTickLabelContainer[i].gameObject.transform.localRotation =
-                        trackTickLabels.tradeDate[dataParameters.TradeName].side["PutTickLabels"].tickLabelList[i].Rotation;
+                    TickLabelContainer[i].gameObject.transform.localScale = new Vector3(dataParameters.TickLabelSize, dataParameters.TickLabelSize, 0f);
+                    TickLabelContainer[i].gameObject.transform.localPosition = tickLabelList[i].Location;
+                    TickLabelContainer[i].gameObject.transform.localRotation = tickLabelList[i].Rotation;
                 }
             }
             else
             {
-                for (int i = 0; i < CallTickLabelContainer.Count; i++)
+                foreach (GameObject tickLabel in TickLabelContainer)
                 {
-                    CallTickLabelContainer[i].gameObject.SetActive(false);
-                }
-                for (int i = 0; i < PutTickLabelContainer.Count; i++)
-                {
-                    PutTickLabelContainer[i].gameObject.SetActive(false);
+                    tickLabel.gameObject.SetActive(false);
                 }
             }
 
             if (dataParameters.ShowLabels)
             {
-                for (int i = 0; i < CallLabelContainer.Count; i++)
+                for (int i = 0; i < TrackLabelContainer.Count; i++)
                 {
-                    CallLabelContainer[i].gameObject.SetActive(true);
-                    TextMesh t = (TextMesh)CallLabelContainer[i].GetComponent(typeof(TextMesh));
+                    TrackLabelContainer[i].gameObject.SetActive(true);
+                    TextMesh t = (TextMesh)TrackLabelContainer[i].GetComponent(typeof(TextMesh));
                     t.color = colorControl.LabelColor;
-                    CallLabelContainer[i].gameObject.transform.localScale = new Vector3(dataParameters.LabelSize, dataParameters.LabelSize, 0f);
-                    CallLabelContainer[i].gameObject.transform.localPosition =
-                        trackLabels.tradeDate[dataParameters.TradeName].side["CallLabels"].labelList[i].Location;
-                    CallLabelContainer[i].gameObject.transform.localRotation =
-                        trackLabels.tradeDate[dataParameters.TradeName].side["CallLabels"].labelList[i].Rotation;
-                }
-
-                for (int i = 0; i < PutLabelContainer.Count; i++)
-                {
-                    PutLabelContainer[i].gameObject.SetActive(true);
-                    TextMesh t = (TextMesh)PutLabelContainer[i].GetComponent(typeof(TextMesh));
-                    t.color = colorControl.LabelColor;
-                    PutLabelContainer[i].gameObject.transform.localScale = new Vector3(dataParameters.LabelSize, dataParameters.LabelSize, 0f);
-                    PutLabelContainer[i].gameObject.transform.localPosition =
-                        trackLabels.tradeDate[dataParameters.TradeName].side["PutLabels"].labelList[i].Location;
-                    PutLabelContainer[i].gameObject.transform.localRotation =
-                        trackLabels.tradeDate[dataParameters.TradeName].side["PutLabels"].labelList[i].Rotation;
+                    TrackLabelContainer[i].gameObject.transform.localScale = new Vector3(dataParameters.LabelSize, dataParameters.LabelSize, 0f);
+                    TrackLabelContainer[i].gameObject.transform.localPosition = trackLabelList[i].Location;
+                    TrackLabelContainer[i].gameObject.transform.localRotation = trackLabelList[i].Rotation;
                 }
             }
             else
             {
-                for (int i = 0; i < CallLabelContainer.Count; i++)
+                foreach (GameObject trackLabelGO in TrackLabelContainer)
                 {
-                    CallLabelContainer[i].gameObject.SetActive(false);
-                }
-                for (int i = 0; i < PutLabelContainer.Count; i++)
-                {
-                    PutLabelContainer[i].gameObject.SetActive(false);
+                    trackLabelGO.gameObject.SetActive(false);
                 }
             }
 
